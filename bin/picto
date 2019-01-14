@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const fs = require('fs')
+const stringify = require('javascript-stringify')
+
+require('ts-node').register({
+  skipProject: true
+})
+
+console.log('Loading config…');
+
+const config = require(process.cwd() + '/' + 'stencil.config.ts').config;
+const pkg = require(process.cwd() + '/' + 'package.json');
+
+pkg.scripts.picto = `stencil build --config picto.config.ts --dev --watch --serve --docs-json docs/build/${config.namespace}/picto/components.json`;
+
+console.log('Updating package.json…');
+
+fs.writeFileSync('packagezz.json', JSON.stringify(pkg, null, 2));
+
+console.log('Creating stencil.config.ts…');
+
+const copy = config.copy || []
+
+config.copy = [...copy, {
+  src: 'pages',
+  dest: `build/${config.namespace}/picto/pages`
+}, {
+  src: '../node_modules/@snaptopixel/picto/dist/picto.js',
+  dest: `build/${config.namespace}/picto/picto.js`
+}]
+config.devServer = {
+  port: 3333,
+  historyApiFallback: {
+    index: '/index.html'
+  }
+}
+config.outputTargets = [{
+  type: 'www',
+  dir: 'docs'
+}]
+
+fs.writeFileSync('picto.config.ts', `export const config = ${stringify(config, null, 2)}`)
+fs.writeFileSync('src/picto.html', `
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Picto</title>
+  <script src="/build/${config.namespace}.js"></script>
+  <link rel="stylesheet" href="/build/${config.namespace}.css">
+  <script src="/build/${config.namespace}/picto/picto.js"></script>
+</head>
+
+<body>
+  <picto-graph></picto-graph>
+</body>
+
+</html>
+`.trim())

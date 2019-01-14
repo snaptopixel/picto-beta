@@ -1,0 +1,71 @@
+{
+  "name": "@snaptopixel/picto-beta",
+  "version": "0.1.0",
+  "description": "Preview, develop and document StencilJS components",
+  "main": "index.js",
+  "husky": {
+    "hooks": {
+      "post-merge": "yarn && stencil build --config stencil.dev.js --dev",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts?(x)": [
+      "tslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "stencil build --config stencil.dev.js --dev --watch --serve --docs-json docs/build/picto/components.json",
+    "lint": "tslint \"src/**/*.ts?(x)\"",
+    "pretty": "prettier --write \"src/**/*.ts?(x)\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snaptopixel/picto-beta.git"
+  },
+  "keywords": [
+    "stenciljs",
+    "web-components",
+    "stencil",
+    "documentation"
+  ],
+  "author": "Casey Corcoran (https://github.com/snaptopixel)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snaptopixel/picto-beta/issues"
+  },
+  "homepage": "https://github.com/snaptopixel/picto-beta#readme",
+  "dependencies": {
+    "@stencil/core": "^0.16.2",
+    "@stencil/router": "^0.3.2",
+    "@types/classnames": "^2.2.7",
+    "@types/color": "^3.0.0",
+    "@types/highlight.js": "^9.12.3",
+    "@types/js-yaml": "^3.11.4",
+    "@types/lodash-es": "^4.17.1",
+    "@types/marked": "^0.6.0",
+    "bulma": "^0.7.2",
+    "classnames": "^2.2.6",
+    "color": "^3.1.0",
+    "emotion": "^10.0.6",
+    "front-matter": "^3.0.1",
+    "highlight.js": "^9.13.1",
+    "javascript-stringify": "^1.6.0",
+    "lodash-es": "^4.17.11",
+    "marked": "^0.6.0",
+    "prettier": "^1.15.3",
+    "rollup-plugin-alias": "^1.5.1",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  },
+  "devDependencies": {
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.0",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-stencil": "^1.0.0"
+  }
+}
