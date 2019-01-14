@@ -70,7 +70,7 @@ export class Graph {
       } else {
         this.pages[link.page] = {
           route: link.sref,
-          url: `${this.resourcesUrl}pages/${link.page}.md`,
+          url: `${this.resourcesUrl}picto/pages/${link.page}.md`,
         };
       }
     }
@@ -88,8 +88,8 @@ export class Graph {
 
   async componentWillLoad() {
     const [manifest, content] = await Promise.all<IComponentManifest, string>([
-      fetch(this.resourcesUrl + 'components.json').then(r => r.json()),
-      fetch(this.resourcesUrl + 'pages/index.md').then(r => r.text()),
+      fetch(this.resourcesUrl + 'picto/components.json').then(r => r.json()),
+      fetch(this.resourcesUrl + 'picto/pages/index.md').then(r => r.text()),
     ]);
     const config = frontMatter(content);
     const nav = config.attributes as Array<IMenu | ILink>;

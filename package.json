@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Preview, develop and document StencilJS components",
   "main": "index.js",
+  "bin": {
+    "picto-init": "bin/picto"
+  },
   "husky": {
     "hooks": {
       "post-merge": "yarn && stencil build --config stencil.dev.js --dev",
@@ -18,9 +21,11 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "stencil build --config stencil.dev.js --dev --watch --serve --docs-json docs/build/picto/components.json",
     "lint": "tslint \"src/**/*.ts?(x)\"",
-    "pretty": "prettier --write \"src/**/*.ts?(x)\""
+    "pretty": "prettier --write \"src/**/*.ts?(x)\"",
+    "build": "stencil build",
+    "picto": "stencil build --config picto.config.ts --dev --watch --serve --docs-json docs/build/picto/picto/components.json",
+    "postinstall": "stencil-init"
   },
   "repository": {
     "type": "git",
@@ -39,7 +44,7 @@
   },
   "homepage": "https://github.com/snaptopixel/picto-beta#readme",
   "dependencies": {
-    "@stencil/core": "^0.16.2",
+    "@stencil/core": "0.16.3",
     "@stencil/router": "^0.3.2",
     "@types/classnames": "^2.2.7",
     "@types/color": "^3.0.0",

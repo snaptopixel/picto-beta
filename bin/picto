@@ -5,6 +5,12 @@
 const fs = require('fs')
 const stringify = require('javascript-stringify')
 
+if (!fs.existsSync('picto')) {
+  fs.mkdirSync('picto/pages', {
+    recursive: true
+  })
+}
+
 require('ts-node').register({
   skipProject: true
 })
@@ -18,32 +24,41 @@ pkg.scripts.picto = `stencil build --config picto.config.ts --dev --watch --serv
 
 console.log('Updating package.json…');
 
-fs.writeFileSync('packagezz.json', JSON.stringify(pkg, null, 2));
+fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 
 console.log('Creating stencil.config.ts…');
 
 const copy = config.copy || []
 
 config.copy = [...copy, {
-  src: 'pages',
+  src: '../picto/pages',
   dest: `build/${config.namespace}/picto/pages`
 }, {
   src: '../node_modules/@snaptopixel/picto/dist/picto.js',
   dest: `build/${config.namespace}/picto/picto.js`
 }]
+
 config.devServer = {
   port: 3333,
   historyApiFallback: {
     index: '/index.html'
   }
 }
+
 config.outputTargets = [{
   type: 'www',
-  dir: 'docs'
+  dir: 'docs',
 }]
 
+config.srcIndexHtml = 'picto/picto.html';
+
+fs.writeFileSync('picto/pages/index.md', `
+# Hey budz
+Yeah dawg
+`);
+
 fs.writeFileSync('picto.config.ts', `export const config = ${stringify(config, null, 2)}`)
-fs.writeFileSync('src/picto.html', `
+fs.writeFileSync('picto/picto.html', `
 <!doctype html>
 <html lang="en">
 

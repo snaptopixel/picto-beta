@@ -1,14 +1,13 @@
 export const config = {
-  namespace: 'somefoo',
-  plugins: [],
+  namespace: 'picto',
   copy: [
     {
-      src: 'pages',
-      dest: 'build/somefoo/picto/pages'
+      src: '../picto/pages',
+      dest: 'build/picto/picto/pages'
     },
     {
       src: '../node_modules/@snaptopixel/picto/dist/picto.js',
-      dest: 'build/somefoo/picto/picto.js'
+      dest: 'build/picto/picto/picto.js'
     }
   ],
   devServer: {
@@ -22,5 +21,6 @@ export const config = {
       type: 'www',
       dir: 'docs'
     }
-  ]
+  ],
+  srcIndexHtml: 'picto/picto.html'
 }
