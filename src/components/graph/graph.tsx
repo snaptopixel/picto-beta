@@ -95,14 +95,6 @@ export class Graph {
     const nav = config.attributes as Array<IMenu | ILink>;
     this.indexSrc = config.body;
 
-    nav.unshift(
-      { label: 'Pages' },
-      {
-        label: 'Home',
-        links: [{ icon: 'home', label: 'Home', sref: '/' }],
-      },
-    );
-
     const grouped: { [name: string]: IMenu } = {};
 
     nav.push({ label: 'Components' });
