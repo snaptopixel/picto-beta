@@ -73,6 +73,7 @@ export class Graph {
         const config = frontMatter(content);
         const nav = config.attributes;
         this.indexSrc = config.body;
+        debugger;
         const grouped = {};
         nav.push({ label: 'Components' });
         const ungrouped = {
