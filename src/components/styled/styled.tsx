@@ -1,5 +1,5 @@
-import { css } from '@/styles';
 import { Component, Element } from '@stencil/core';
+import { css } from 'emotion';
 
 const reset = css`
   all: initial;

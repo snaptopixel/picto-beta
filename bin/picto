@@ -4,10 +4,10 @@
 
 const fs = require('fs')
 const stringify = require('javascript-stringify')
-const firstRun = !fs.existsSync('picto')
+const firstRun = !fs.existsSync('picto.config.ts')
 
 if (firstRun) {
-  fs.mkdirSync('picto/pages', {
+  fs.mkdirSync('src/picto/pages', {
     recursive: true
   })
 }
@@ -21,20 +21,17 @@ const pkg = require(process.cwd() + '/' + 'package.json');
 
 pkg.scripts['picto:init'] = `picto-init`;
 pkg.scripts['picto:start'] = `stencil build --config picto.config.ts --dev --watch --serve --docs-json docs/build/${config.namespace}/picto/components.json`;
-
-console.log('Updating package.json…');
+pkg.scripts['picto:build'] = `stencil build --config picto.config.ts --docs-json docs/build/${config.namespace}/picto/components.json`;
 
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
-
-console.log('Creating stencil.config.ts…');
 
 const copy = config.copy || []
 
 config.copy = [...copy, {
-  src: '../picto/pages',
+  src: 'picto/pages',
   dest: `build/${config.namespace}/picto/pages`
 }, {
-  src: '../node_modules/@snaptopixel/picto/dist/picto.js',
+  src: '../node_modules/@snaptopixel/picto-beta/dist/picto.js',
   dest: `build/${config.namespace}/picto/picto.js`
 }]
 
@@ -50,15 +47,15 @@ config.outputTargets = [{
   dir: 'docs',
 }]
 
-config.srcIndexHtml = 'picto/picto.html';
+config.srcIndexHtml = 'src/picto/index.html';
 
 if (firstRun) {
-  fs.writeFileSync('picto/pages/example.md', `
+  fs.writeFileSync('src/picto/pages/example.md', `
 # Example page
 
 This is an example page
 `)
-  fs.writeFileSync('picto/pages/index.md', `
+  fs.writeFileSync('src/picto/pages/index.md', `
 ---
 - label: Links
 - links:
@@ -102,14 +99,13 @@ Simply create the files in the \`picto/pages\` directory and add the links in th
 `);
 }
 
-fs.writeFileSync('picto.config.ts', `export const config = ${stringify(config, null, 2)}`)
-fs.writeFileSync('picto/picto.html', `
+fs.writeFileSync('src/picto/index.html', `
 <!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <title>Picto</title>
+  <title>Picto (${config.namespace})</title>
   <script src="/build/${config.namespace}.js"></script>
   <link rel="stylesheet" href="/build/${config.namespace}.css">
   <script src="/build/${config.namespace}/picto/picto.js"></script>
@@ -122,4 +118,4 @@ fs.writeFileSync('picto/picto.html', `
 </html>
 `.trim())
 
-console.log('Completed!')
+fs.writeFileSync('picto.config.ts', `export const config = ${stringify(config, null, 2)}`)

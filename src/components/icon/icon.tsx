@@ -1,5 +1,5 @@
-import { css } from '@/styles';
 import { Component, Prop } from '@stencil/core';
+import { css } from 'emotion';
 
 const icons = css`
   @import url('https://use.fontawesome.com/releases/v5.6.1/css/all.css');

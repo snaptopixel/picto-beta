@@ -1,5 +1,5 @@
-import { css } from '@/styles';
 import { Component, Element, Prop } from '@stencil/core';
+import { css } from 'emotion';
 import Yaml from 'js-yaml';
 import Marked from 'marked';
 

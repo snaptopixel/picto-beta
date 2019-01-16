@@ -1,7 +1,7 @@
-import { css } from '@/styles';
 import { Component, Element, Listen, Prop } from '@stencil/core';
 import { VNode } from '@stencil/core/dist/declarations';
 import '@stencil/router';
+import { css } from 'emotion';
 import frontMatter from 'front-matter';
 import { kebabCase } from 'lodash-es';
 

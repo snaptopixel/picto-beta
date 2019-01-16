@@ -1,5 +1,6 @@
-import { classes, css } from '@/styles';
 import { Component, Prop } from '@stencil/core';
+import classes from 'classnames';
+import { css } from 'emotion';
 
 namespace styles {
   export const table = classes(

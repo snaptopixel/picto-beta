@@ -1,5 +1,6 @@
-import { classes, color, css } from '@/styles';
 import { Component, Element, Prop, State } from '@stencil/core';
+import classes from 'classnames';
+import { css } from 'emotion';
 
 function checkerboard(boxSize: number, boxColor: string) {
   return css`
@@ -85,7 +86,7 @@ namespace styles {
 })
 export class Preview {
   @Element() el: HTMLElement;
-  
+
   @Prop({ mutable: true }) source: string;
 
   @State() state: 'preview' | 'source' | 'events' = 'preview';
