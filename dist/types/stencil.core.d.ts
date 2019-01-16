@@ -133,7 +133,9 @@ export interface EventEmitter<T= any> {
   emit: (data?: T) => CustomEvent<T>;
 }
 
-export type EventListenerEnable = (instance: any, eventName: string, enabled: boolean, attachTo?: string|Element, passive?: boolean) => void;
+export interface EventListenerEnable {
+  (instance: any, eventName: string, enabled: boolean, attachTo?: string|Element, passive?: boolean): void;
+}
 
 export interface QueueApi {
   tick: (cb: RafCallback) => void;
@@ -143,7 +145,9 @@ export interface QueueApi {
   flush?: (cb?: () => void) => void;
 }
 
-export type RafCallback = (timeStamp: number) => void;
+export interface RafCallback {
+  (timeStamp: number): void;
+}
 
 /**
  * This file gets copied to all distributions of stencil component collections.
@@ -1172,7 +1176,9 @@ export interface FunctionalUtilities {
   map: (children: FVNode[], cb: (vnode: ChildNode, index: number, array: FVNode[]) => ChildNode) => FVNode[];
 }
 
-export type FunctionalComponent<T = {}> = (props: T, children: FVNode[], utils: FunctionalUtilities) => FVNode | FVNode[];
+export interface FunctionalComponent<T = {}> {
+  (props: T, children: FVNode[], utils: FunctionalUtilities): FVNode | FVNode[];
+}
 
 export interface FVNode {
   // using v prefixes largely so closure has no issue property renaming

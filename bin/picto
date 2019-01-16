@@ -15,12 +15,15 @@ if (firstRun) {
 require.paths = [process.cwd()+'/node_modules']
 
 require('ts-node').register({
-  skipProject: true
+  skipProject: true,
+  compilerOptions: {
+    "esModuleInterop": true
+  }
 })
 
 const pictoConfig = {};
 const config = require(process.cwd() + '/stencil.config.ts').config;
-const pkg = require(process.cwd() + 'package.json');
+const pkg = require(process.cwd() + '/package.json');
 
 pkg.scripts['picto:start'] = `stencil build --config picto.config.ts --dev --watch --serve --docs-json docs/build/${config.namespace}/picto/components.json`;
 pkg.scripts['picto:build'] = `stencil build --config picto.config.ts --docs-json docs/build/${config.namespace}/picto/components.json`;
@@ -28,6 +31,8 @@ pkg.scripts['picto:build'] = `stencil build --config picto.config.ts --docs-json
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 
 const copy = config.copy || [];
+
+pictoConfig.namespace = config.namespace;
 
 pictoConfig.copy = [...copy, {
   src: 'picto/pages',

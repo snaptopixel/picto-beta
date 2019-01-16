@@ -1,7 +1,6 @@
-import '@stencil/router';
-
 import '../../stencil.core';
 import { VNode } from '../../stencil.core/dist/declarations';
+import '@stencil/router';
 export declare class Graph {
     el: HTMLElement;
     resourcesUrl: string;
