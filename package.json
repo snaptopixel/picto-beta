@@ -20,7 +20,7 @@
     }
   },
   "lint-staged": {
-    "*.ts?(x)": [
+    "src/*.ts?(x)": [
       "tslint --fix",
       "prettier --write",
       "git add"

@@ -19,7 +19,6 @@ require('ts-node').register({
 const config = require(process.cwd() + '/' + 'stencil.config.ts').config;
 const pkg = require(process.cwd() + '/' + 'package.json');
 
-pkg.scripts['picto:init'] = `picto-init`;
 pkg.scripts['picto:start'] = `stencil build --config picto.config.ts --dev --watch --serve --docs-json docs/build/${config.namespace}/picto/components.json`;
 pkg.scripts['picto:build'] = `stencil build --config picto.config.ts --docs-json docs/build/${config.namespace}/picto/components.json`;
 
