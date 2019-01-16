@@ -333,4 +333,4 @@ var ActiveRouter = createProviderConsumer({
     routeViewsUpdated: () => { }
 });
 
-export { ActiveRouter as a, valueEqual as b, createLocation as c, createKey as d, addLeadingSlash as e, stripTrailingSlash as f, hasBasename as g, stripBasename as h, createPath as i, locationsAreEqual as j, stripLeadingSlash as k };
+export { createLocation as a, createKey as b, addLeadingSlash as c, stripTrailingSlash as d, hasBasename as e, stripBasename as f, createPath as g, locationsAreEqual as h, stripLeadingSlash as i, ActiveRouter as j, valueEqual as k };

@@ -38,8 +38,8 @@ pictoConfig.copy = [...copy, {
   src: 'picto/pages',
   dest: `build/${config.namespace}/picto/pages`
 }, {
-  src: '../node_modules/@snaptopixel/picto-beta/dist/picto.js',
-  dest: `build/${config.namespace}/picto/picto.js`
+  src: '../node_modules/@snaptopixel/picto-beta/dist',
+  dest: `build/${config.namespace}/picto`
 }]
 
 pictoConfig.devServer = {

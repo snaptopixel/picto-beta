@@ -31,7 +31,7 @@
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "pretty": "prettier --write \"src/**/*.ts?(x)\"",
     "build": "stencil build",
-    "start": "stencil build --config stencil.dev.ts --dev --watch --serve --docs-json docs/build/picto/picto/components.json"
+    "start": "stencil build --config stencil.dev.ts --dev --watch --serve --docs-json docs/build/picto/components.json"
   },
   "repository": {
     "type": "git",

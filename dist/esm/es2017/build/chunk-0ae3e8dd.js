@@ -39,4 +39,4 @@ const storageAvailable = (type) => {
     }
 };
 
-export { isModifiedEvent as a, storageAvailable as b, canUseDOM as c, addEventListener$1 as d, removeEventListener as e, getConfirmation as f, supportsHistory as g, supportsPopStateOnHashChange as h, isExtraneousPopstateEvent as i, supportsGoWithoutReloadUsingHash as j };
+export { storageAvailable as a, canUseDOM as b, addEventListener$1 as c, removeEventListener as d, getConfirmation as e, supportsHistory as f, supportsPopStateOnHashChange as g, isExtraneousPopstateEvent as h, supportsGoWithoutReloadUsingHash as i, isModifiedEvent as j };

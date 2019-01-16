@@ -6,7 +6,7 @@ export const config: Config = {
   copy: [
     {
       src: 'pages',
-      dest: 'build/picto/picto/pages',
+      dest: 'build/picto/pages',
     },
   ],
   devServer: {
