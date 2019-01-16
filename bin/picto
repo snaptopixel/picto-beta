@@ -12,21 +12,24 @@ if (firstRun) {
   })
 }
 
+require.paths = [process.cwd()+'/node_modules']
+
 require('ts-node').register({
   skipProject: true
 })
 
-const config = require(process.cwd() + '/' + 'stencil.config.ts').config;
-const pkg = require(process.cwd() + '/' + 'package.json');
+const pictoConfig = {};
+const config = require(process.cwd() + '/stencil.config.ts').config;
+const pkg = require(process.cwd() + 'package.json');
 
 pkg.scripts['picto:start'] = `stencil build --config picto.config.ts --dev --watch --serve --docs-json docs/build/${config.namespace}/picto/components.json`;
 pkg.scripts['picto:build'] = `stencil build --config picto.config.ts --docs-json docs/build/${config.namespace}/picto/components.json`;
 
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 
-const copy = config.copy || []
+const copy = config.copy || [];
 
-config.copy = [...copy, {
+pictoConfig.copy = [...copy, {
   src: 'picto/pages',
   dest: `build/${config.namespace}/picto/pages`
 }, {
@@ -34,19 +37,19 @@ config.copy = [...copy, {
   dest: `build/${config.namespace}/picto/picto.js`
 }]
 
-config.devServer = {
+pictoConfig.devServer = {
   port: 3333,
   historyApiFallback: {
     index: '/index.html'
   }
 }
 
-config.outputTargets = [{
+pictoConfig.outputTargets = [{
   type: 'www',
   dir: 'docs',
 }]
 
-config.srcIndexHtml = 'src/picto/index.html';
+pictoConfig.srcIndexHtml = 'src/picto/index.html';
 
 if (firstRun) {
   fs.writeFileSync('src/picto/pages/example.md', `
@@ -117,4 +120,8 @@ fs.writeFileSync('src/picto/index.html', `
 </html>
 `.trim())
 
-fs.writeFileSync('picto.config.ts', `export const config = ${stringify(config, null, 2)}`)
+fs.writeFileSync('picto.config.ts', `export const config = ${stringify(pictoConfig, null, 2)}`)
+
+if (config.plugins) {
+  console.warn("[PICTO] Plugins detected, make sure you add them to picto.config.ts")
+}
