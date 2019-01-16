@@ -10,11 +10,12 @@ const icons = css`
 })
 export class Icon {
   @Prop() name: string;
-  @Prop() styleType: 'solid' | 'regular' = 'solid';
+  @Prop() styleType: 'solid' | 'regular' | 'brand' = 'solid';
 
   styleClasses = {
     solid: 'fas',
     regular: 'far',
+    brand: 'fab',
   };
   render() {
     return [

@@ -27,8 +27,8 @@ const pictoConfig = {};
 const config = require(process.cwd() + '/stencil.config.ts').config;
 const pkg = require(process.cwd() + '/package.json');
 
-pkg.scripts['picto:start'] = `stencil build --config picto.config.ts --dev --watch --serve --docs-json docs/build/picto/picto/components.json`;
-pkg.scripts['picto:build'] = `stencil build --config picto.config.ts --docs-json docs/build/picto/picto/components.json`;
+pkg.scripts['picto:start'] = `stencil build --config picto.config.ts --dev --watch --serve --docs --docs-json docs/build/picto/picto/components.json`;
+pkg.scripts['picto:build'] = `stencil build --config picto.config.ts --docs --docs-json docs/build/picto/picto/components.json`;
 
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 
@@ -59,14 +59,14 @@ pictoConfig.outputTargets = [{
 pictoConfig.srcIndexHtml = 'src/picto/index.html';
 
 
-fs.writeFileSync('src/picto/pages/example.md', `
-# Example page
+fs.writeFileSync('src/picto/pages/example.md',
+`# Example page
 
 This is an example page
 `)
 
-fs.writeFileSync('src/picto/pages/index.md', `
----
+fs.writeFileSync('src/picto/pages/index.md',
+`---
 - label: Links
 - links:
   - label: Home
@@ -74,6 +74,7 @@ fs.writeFileSync('src/picto/pages/index.md', `
     sref: /
   - label: Picto
     icon: github
+    iconStyle: brand
     href: https://github.com/snaptopixel/picto
 - label: Examples
 - links:
@@ -82,7 +83,7 @@ fs.writeFileSync('src/picto/pages/index.md', `
       - label: Page
         page: example
       - label: Hyperlink
-        url: https://www.google.com
+        href: https://www.google.com
 ---
 
 # Welcome to Picto!
@@ -108,8 +109,8 @@ You can add any number of arbitrary pages to this site using markdown.
 Simply create the files in the \`picto/pages\` directory and add the links in the menu via the \`page\` property.
 `);
 
-fs.writeFileSync('src/picto/index.html', `
-<!doctype html>
+fs.writeFileSync('src/picto/index.html',
+`<!doctype html>
 <html lang="en">
 
 <head>

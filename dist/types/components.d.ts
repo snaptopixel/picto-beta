@@ -49,11 +49,11 @@ export namespace Components {
 
   interface PictoIcon {
     'name': string;
-    'styleType': 'solid' | 'regular';
+    'styleType': 'solid' | 'regular' | 'brand';
   }
   interface PictoIconAttributes extends StencilHTMLAttributes {
     'name'?: string;
-    'styleType'?: 'solid' | 'regular';
+    'styleType'?: 'solid' | 'regular' | 'brand';
   }
 
   interface PictoMarkdown {

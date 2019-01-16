@@ -1,9 +1,9 @@
 import { h } from '../picto.core.js';
 
 import { a as commonjsGlobal, b as commonjsRequire, c as createCommonjsModule, d as css } from './chunk-a05410b6.js';
-import { j as ActiveRouter } from './chunk-5f7fd877.js';
-import { j as isModifiedEvent } from './chunk-0ae3e8dd.js';
 import { a as matchPath } from './chunk-5ce30e48.js';
+import { a as ActiveRouter } from './chunk-5f7fd877.js';
+import { a as isModifiedEvent } from './chunk-0ae3e8dd.js';
 
 var highlight = createCommonjsModule(function (module, exports) {
 /*
@@ -22294,6 +22294,7 @@ class Icon {
         this.styleClasses = {
             solid: 'fas',
             regular: 'far',
+            brand: 'fab'
         };
     }
     render() {

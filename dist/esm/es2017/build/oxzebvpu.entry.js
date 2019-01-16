@@ -1,8 +1,8 @@
 import { h } from '../picto.core.js';
 
 import { a as commonjsGlobal, b as commonjsRequire, c as createCommonjsModule, d as css } from './chunk-a05410b6.js';
-import { a as createLocation, b as createKey, c as addLeadingSlash, d as stripTrailingSlash, e as hasBasename, f as stripBasename, g as createPath, h as locationsAreEqual, i as stripLeadingSlash, j as ActiveRouter } from './chunk-5f7fd877.js';
-import { a as storageAvailable, b as canUseDOM, c as addEventListener$1, d as removeEventListener, e as getConfirmation, f as supportsHistory, g as supportsPopStateOnHashChange, h as isExtraneousPopstateEvent, i as supportsGoWithoutReloadUsingHash } from './chunk-0ae3e8dd.js';
+import { c as createLocation, d as createKey, e as addLeadingSlash, f as stripTrailingSlash, g as hasBasename, h as stripBasename, i as createPath, j as locationsAreEqual, k as stripLeadingSlash, a as ActiveRouter } from './chunk-5f7fd877.js';
+import { b as storageAvailable, c as canUseDOM, d as addEventListener$1, e as removeEventListener, f as getConfirmation, g as supportsHistory, h as supportsPopStateOnHashChange, i as isExtraneousPopstateEvent, j as supportsGoWithoutReloadUsingHash } from './chunk-0ae3e8dd.js';
 
 function isNothing(subject) {
   return (typeof subject === 'undefined') || (subject === null);
@@ -21804,7 +21804,6 @@ class Graph {
         const config = frontMatter(content);
         const nav = config.attributes;
         this.indexSrc = config.body;
-        debugger;
         const grouped = {};
         nav.push({ label: 'Components' });
         const ungrouped = {
@@ -23707,8 +23706,8 @@ class Menu {
         return link.sref ? (h("stencil-route-link", { url: link.sref, exact: true, activeClass: showActive ? 'is-active' : '', anchorClass: styles$3.link, onClick: e => {
                 this.linkClicked.emit(link);
             } },
-            link.links && (h("picto-icon", { name: link.icon || 'book', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
-            !link.links && (h("picto-icon", { name: link.icon || 'file-alt', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
+            link.links && (h("picto-icon", { name: link.icon || 'book', styleType: link.iconStyle || 'solid', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
+            !link.links && (h("picto-icon", { name: link.icon || 'file-alt', styleType: link.iconStyle || 'solid', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
             link.label)) : (h("a", { class: styles$3.link, href: link.href, onClick: e => {
                 if (e.button === 0 &&
                     !e.ctrlKey &&
@@ -23719,7 +23718,7 @@ class Menu {
                     this.linkClicked.emit(link);
                 }
             } },
-            h("picto-icon", { style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light', name: link.icon || 'link' }),
+            h("picto-icon", { style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light', name: link.icon || 'link', styleType: link.iconStyle || 'solid' }),
             link.label));
     }
     render() {

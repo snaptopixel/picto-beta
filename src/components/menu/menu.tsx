@@ -7,7 +7,6 @@ import {
   State,
 } from '@stencil/core';
 import { css } from 'emotion';
-import { stubArray } from 'lodash-es';
 
 const styles = {
   title: css`
@@ -43,6 +42,7 @@ export class Menu {
         {link.links && (
           <picto-icon
             name={link.icon || 'book'}
+            styleType={(link.iconStyle as any) || 'solid'}
             style={{ float: 'left', marginTop: '-5px' }}
             class='has-text-grey-light'
           />
@@ -50,6 +50,7 @@ export class Menu {
         {!link.links && (
           <picto-icon
             name={link.icon || 'file-alt'}
+            styleType={(link.iconStyle as any) || 'solid'}
             style={{ float: 'left', marginTop: '-5px' }}
             class='has-text-grey-light'
           />
@@ -77,6 +78,7 @@ export class Menu {
           style={{ float: 'left', marginTop: '-5px' }}
           class='has-text-grey-light'
           name={link.icon || 'link'}
+          styleType={(link.iconStyle as any) || 'solid'}
         />
         {link.label}
       </a>

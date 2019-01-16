@@ -1,6 +1,6 @@
 import { h } from '../picto.core.js';
 
-import { k as valueEqual } from './chunk-5f7fd877.js';
+import { b as valueEqual } from './chunk-5f7fd877.js';
 
 var DEFAULT_DELIMITER = '/';
 var DEFAULT_DELIMITERS = './';

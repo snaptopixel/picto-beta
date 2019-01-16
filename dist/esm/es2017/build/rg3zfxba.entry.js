@@ -1,7 +1,7 @@
 import { h } from '../picto.core.js';
 
-import { j as ActiveRouter } from './chunk-5f7fd877.js';
 import { a as matchPath, b as matchesAreEqual } from './chunk-5ce30e48.js';
+import { a as ActiveRouter } from './chunk-5f7fd877.js';
 
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {

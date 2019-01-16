@@ -4,6 +4,7 @@ interface ILink {
     sref?: string;
     page?: string;
     icon?: string;
+    iconStyle?: string;
     preview?: {
         innerHTML?: string;
         props?: any;

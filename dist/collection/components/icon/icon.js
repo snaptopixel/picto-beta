@@ -8,6 +8,7 @@ export class Icon {
         this.styleClasses = {
             solid: 'fas',
             regular: 'far',
+            brand: 'fab'
         };
     }
     render() {

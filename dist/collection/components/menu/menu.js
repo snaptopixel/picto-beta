@@ -15,8 +15,8 @@ export class Menu {
         return link.sref ? (h("stencil-route-link", { url: link.sref, exact: true, activeClass: showActive ? 'is-active' : '', anchorClass: styles.link, onClick: e => {
                 this.linkClicked.emit(link);
             } },
-            link.links && (h("picto-icon", { name: link.icon || 'book', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
-            !link.links && (h("picto-icon", { name: link.icon || 'file-alt', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
+            link.links && (h("picto-icon", { name: link.icon || 'book', styleType: link.iconStyle || 'solid', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
+            !link.links && (h("picto-icon", { name: link.icon || 'file-alt', styleType: link.iconStyle || 'solid', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
             link.label)) : (h("a", { class: styles.link, href: link.href, onClick: e => {
                 if (e.button === 0 &&
                     !e.ctrlKey &&
@@ -27,7 +27,7 @@ export class Menu {
                     this.linkClicked.emit(link);
                 }
             } },
-            h("picto-icon", { style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light', name: link.icon || 'link' }),
+            h("picto-icon", { style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light', name: link.icon || 'link', styleType: link.iconStyle || 'solid' }),
             link.label));
     }
     render() {
