@@ -41,7 +41,7 @@ Displays a menu for your components
 
 | Property  | Attribute | Description | Type                 | Default |
 | --------- | --------- | ----------- | -------------------- | ------- |
-| `options` | --        |             | `(ILink \| IMenu)[]` | `[]`    |
+| `options` | --        |             | `(IMenu \| ILink)[]` | `[]`    |
 
 
 ## Events
