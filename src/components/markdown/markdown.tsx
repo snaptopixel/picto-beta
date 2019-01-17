@@ -15,9 +15,9 @@ const code: {
     return '';
   },
   html(src, lang, isEscaped) {
-    const value = `<picto-preview source='${escape(
-      src,
-    )}' props='${previewProps}'></picto-preview>`;
+    const value = `<picto-preview source='${escape(src)}' props='${escape(
+      previewProps,
+    )}'></picto-preview>`;
     previewProps = '';
     return value;
   },

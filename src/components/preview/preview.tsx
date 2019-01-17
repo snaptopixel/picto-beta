@@ -134,7 +134,7 @@ export class Preview {
 
   componentWillLoad() {
     this.source = unescape(this.source);
-    this.demoProps = Yaml.load(this.props);
+    this.demoProps = Yaml.load(unescape(this.props));
   }
 
   render() {
