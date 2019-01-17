@@ -56,6 +56,14 @@ export namespace Components {
     'styleType'?: 'solid' | 'regular' | 'brand';
   }
 
+  interface PictoLink {
+    'to': string;
+  }
+  interface PictoLinkAttributes extends StencilHTMLAttributes {
+    'onLinkClicked'?: (event: CustomEvent<string>) => void;
+    'to'?: string;
+  }
+
   interface PictoMarkdown {
     /**
     * The markdown to be rendered
@@ -75,7 +83,7 @@ export namespace Components {
     'options': Array<IMenu | ILink>;
   }
   interface PictoMenuAttributes extends StencilHTMLAttributes {
-    'onLinkClicked'?: (event: CustomEvent<ILink>) => void;
+    'onNavLinkClicked'?: (event: CustomEvent<ILink>) => void;
     'options'?: Array<IMenu | ILink>;
   }
 
@@ -106,6 +114,7 @@ declare global {
     'PictoGraph': Components.PictoGraph;
     'PictoGraphIndex': Components.PictoGraphIndex;
     'PictoIcon': Components.PictoIcon;
+    'PictoLink': Components.PictoLink;
     'PictoMarkdown': Components.PictoMarkdown;
     'PictoMenu': Components.PictoMenu;
     'PictoPreviewEvents': Components.PictoPreviewEvents;
@@ -119,6 +128,7 @@ declare global {
     'picto-graph': Components.PictoGraphAttributes;
     'picto-graph-index': Components.PictoGraphIndexAttributes;
     'picto-icon': Components.PictoIconAttributes;
+    'picto-link': Components.PictoLinkAttributes;
     'picto-markdown': Components.PictoMarkdownAttributes;
     'picto-menu': Components.PictoMenuAttributes;
     'picto-preview-events': Components.PictoPreviewEventsAttributes;
@@ -150,6 +160,12 @@ declare global {
   var HTMLPictoIconElement: {
     prototype: HTMLPictoIconElement;
     new (): HTMLPictoIconElement;
+  };
+
+  interface HTMLPictoLinkElement extends Components.PictoLink, HTMLStencilElement {}
+  var HTMLPictoLinkElement: {
+    prototype: HTMLPictoLinkElement;
+    new (): HTMLPictoLinkElement;
   };
 
   interface HTMLPictoMarkdownElement extends Components.PictoMarkdown, HTMLStencilElement {}
@@ -193,6 +209,7 @@ declare global {
     'picto-graph': HTMLPictoGraphElement
     'picto-graph-index': HTMLPictoGraphIndexElement
     'picto-icon': HTMLPictoIconElement
+    'picto-link': HTMLPictoLinkElement
     'picto-markdown': HTMLPictoMarkdownElement
     'picto-menu': HTMLPictoMenuElement
     'picto-preview-events': HTMLPictoPreviewEventsElement
@@ -206,6 +223,7 @@ declare global {
     'picto-graph': HTMLPictoGraphElement;
     'picto-graph-index': HTMLPictoGraphIndexElement;
     'picto-icon': HTMLPictoIconElement;
+    'picto-link': HTMLPictoLinkElement;
     'picto-markdown': HTMLPictoMarkdownElement;
     'picto-menu': HTMLPictoMenuElement;
     'picto-preview-events': HTMLPictoPreviewEventsElement;

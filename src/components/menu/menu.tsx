@@ -25,8 +25,8 @@ const styles = {
 })
 export class Menu {
   @Element() el: HTMLElement;
-  @Event() linkClicked: EventEmitter<ILink>;
-  @Prop() options: Array<IMenu | ILink>;
+  @Event() navLinkClicked: EventEmitter<ILink>;
+  @Prop() options: Array<IMenu | ILink> = [];
   @State() selectedLink: ILink;
   renderLink(link: IMenu, showActive = true) {
     return link.sref ? (
@@ -36,7 +36,7 @@ export class Menu {
         activeClass={showActive ? 'is-active' : ''}
         anchorClass={styles.link}
         onClick={e => {
-          this.linkClicked.emit(link);
+          this.navLinkClicked.emit(link);
         }}
       >
         {link.links && (
@@ -70,7 +70,7 @@ export class Menu {
             !e.metaKey
           ) {
             e.preventDefault();
-            this.linkClicked.emit(link);
+            this.navLinkClicked.emit(link);
           }
         }}
       >

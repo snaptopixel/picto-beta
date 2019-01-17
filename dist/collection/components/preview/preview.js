@@ -34,7 +34,7 @@ var styles;
         padding: '0';
         vertical-align: 'middle';
       }
-      td:first-child {
+      td:first-of-type {
         padding-left: 0.5rem;
         width: 25%;
       }

@@ -43,6 +43,17 @@
       ]
     },
     {
+      "label": "picto-link",
+      "description": "",
+      "attributes": [
+        {
+          "label": "to",
+          "description": "",
+          "required": false
+        }
+      ]
+    },
+    {
       "label": "picto-markdown",
       "description": "",
       "attributes": [

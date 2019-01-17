@@ -34,6 +34,12 @@
       "listeners": [
         {
           "event": "linkClicked",
+          "method": "onLinkClicked",
+          "passive": false,
+          "capture": false
+        },
+        {
+          "event": "navLinkClicked",
           "method": "onNavLink",
           "passive": false,
           "capture": false
@@ -81,6 +87,28 @@
           "name": "styleType",
           "type": "String",
           "attr": "style-type"
+        }
+      ]
+    },
+    {
+      "tag": "picto-link",
+      "dependencies": [],
+      "componentClass": "Link",
+      "componentPath": "components/link/link.js",
+      "styles": {},
+      "props": [
+        {
+          "name": "to",
+          "type": "String",
+          "attr": "to"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      },
+      "events": [
+        {
+          "event": "linkClicked"
         }
       ]
     },
@@ -142,7 +170,7 @@
       },
       "events": [
         {
-          "event": "linkClicked"
+          "event": "navLinkClicked"
         }
       ]
     },

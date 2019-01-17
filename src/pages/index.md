@@ -16,4 +16,7 @@
 
 # Welcome to the home page
 
-You did it dude, great job rite on, itsfresh
+You did it dude, great job rite on
+
+<picto-link to='picto-markdown'>Markdown</picto-link>
+<picto-link to='foo'>Page</picto-link>

@@ -47,6 +47,9 @@ export class Graph {
         }
         if (link.page) {
             if (this.pages[link.page]) {
+                if (this.pages[link.page].route) {
+                    throw new Error(`[picto] pages must have a unique name, ${link.page} already exists!`);
+                }
                 this.pages[link.page].route = link.sref;
             }
             else {
@@ -64,6 +67,9 @@ export class Graph {
         if (link.href) {
             window.open(link.href);
         }
+    }
+    onLinkClicked({ detail: to }) {
+        this.history.push(this.pages[to].route);
     }
     async componentWillLoad() {
         const [manifest, content] = await Promise.all([
@@ -126,6 +132,7 @@ export class Graph {
     render() {
         return [
             h("stencil-router", { class: styles.host },
+                h("stencil-route", { url: '/', routeRender: ({ history }) => (this.history = history) }),
                 h("picto-menu", { class: styles.menu, options: this.menuOptions }),
                 h("stencil-route", { url: '/', exact: true, class: styles.body, component: 'picto-markdown', componentProps: { source: this.indexSrc } }),
                 Object.entries(this.pages).map(([name, { route, url, source, vdom }]) => (h("stencil-route", { url: route, class: styles.body, exact: true, routeRender: () => vdom || h("picto-markdown", { url: url, source: source }) })))),
@@ -141,7 +148,10 @@ export class Graph {
         }
     }; }
     static get listeners() { return [{
-            "name": "linkClicked",
+            "name": "navLinkClicked",
             "method": "onNavLink"
+        }, {
+            "name": "linkClicked",
+            "method": "onLinkClicked"
         }]; }
 }

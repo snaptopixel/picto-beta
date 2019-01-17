@@ -1,6 +1,6 @@
 import { Component, Element, Listen, Prop } from '@stencil/core';
 import { VNode } from '@stencil/core/dist/declarations';
-import '@stencil/router';
+import { RouterHistory } from '@stencil/router';
 import { css } from 'emotion';
 import frontMatter from 'front-matter';
 import { kebabCase } from 'lodash-es';
@@ -52,6 +52,7 @@ export class Graph {
     };
   } = {};
   indexSrc: string;
+  history: RouterHistory;
 
   parseLink(link: IMenu, route = '') {
     if (link.href || (!link.links && Object.keys(link).length === 1)) {
@@ -66,6 +67,13 @@ export class Graph {
     }
     if (link.page) {
       if (this.pages[link.page]) {
+        if (this.pages[link.page].route) {
+          throw new Error(
+            `[picto] pages must have a unique name, ${
+              link.page
+            } already exists!`,
+          );
+        }
         this.pages[link.page].route = link.sref;
       } else {
         this.pages[link.page] = {
@@ -79,11 +87,16 @@ export class Graph {
     }
   }
 
-  @Listen('linkClicked')
+  @Listen('navLinkClicked')
   onNavLink({ detail: link }: CustomEvent<ILink>) {
     if (link.href) {
       window.open(link.href);
     }
+  }
+
+  @Listen('linkClicked')
+  onLinkClicked({ detail: to }: CustomEvent<string>) {
+    this.history.push(this.pages[to].route);
   }
 
   async componentWillLoad() {
@@ -154,6 +167,10 @@ export class Graph {
   render() {
     return [
       <stencil-router class={styles.host}>
+        <stencil-route
+          url='/'
+          routeRender={({ history }) => (this.history = history)}
+        />
         <picto-menu class={styles.menu} options={this.menuOptions} />
         <stencil-route
           url='/'

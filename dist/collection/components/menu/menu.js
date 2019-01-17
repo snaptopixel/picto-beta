@@ -11,9 +11,12 @@ const styles = {
   `,
 };
 export class Menu {
+    constructor() {
+        this.options = [];
+    }
     renderLink(link, showActive = true) {
         return link.sref ? (h("stencil-route-link", { url: link.sref, exact: true, activeClass: showActive ? 'is-active' : '', anchorClass: styles.link, onClick: e => {
-                this.linkClicked.emit(link);
+                this.navLinkClicked.emit(link);
             } },
             link.links && (h("picto-icon", { name: link.icon || 'book', styleType: link.iconStyle || 'solid', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
             !link.links && (h("picto-icon", { name: link.icon || 'file-alt', styleType: link.iconStyle || 'solid', style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light' })),
@@ -24,7 +27,7 @@ export class Menu {
                     !e.altKey &&
                     !e.metaKey) {
                     e.preventDefault();
-                    this.linkClicked.emit(link);
+                    this.navLinkClicked.emit(link);
                 }
             } },
             h("picto-icon", { style: { float: 'left', marginTop: '-5px' }, class: 'has-text-grey-light', name: link.icon || 'link', styleType: link.iconStyle || 'solid' }),
@@ -71,8 +74,8 @@ export class Menu {
         }
     }; }
     static get events() { return [{
-            "name": "linkClicked",
-            "method": "linkClicked",
+            "name": "navLinkClicked",
+            "method": "navLinkClicked",
             "bubbles": true,
             "cancelable": true,
             "composed": true
