@@ -1,1 +1,0 @@
-// picto: CommonJS Main
