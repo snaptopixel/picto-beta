@@ -1,6 +1,7 @@
-import { Component, Element, Prop, State } from '@stencil/core';
+import { Component, Element, Prop, State, Watch } from '@stencil/core';
 import classes from 'classnames';
 import { css } from 'emotion';
+import Yaml from 'js-yaml';
 
 function checkerboard(boxSize: number, boxColor: string) {
   return css`
@@ -88,12 +89,15 @@ export class Preview {
   @Element() el: HTMLElement;
 
   @Prop({ mutable: true }) source: string;
+  @Prop() props: string;
+  @Prop() component: IComponentMeta;
 
   @State() state: 'preview' | 'source' | 'events' = 'preview';
   @State() events: CustomEvent[] = [];
 
   previewEl: HTMLElement;
   viewedEventsCount = 0;
+  demoProps: { [prop: string]: any };
 
   get eventCount() {
     return this.state === 'events' ||
@@ -111,11 +115,26 @@ export class Preview {
   }
 
   handleEvent(event: CustomEvent) {
+    event.stopPropagation();
     this.events = [...this.events, event];
+  }
+
+  @Watch('component')
+  onComponent() {
+    const el: any = this.el.querySelector(this.component.tag);
+    if (this.demoProps) {
+      Object.entries(this.demoProps).map(([prop, value]) => {
+        el[prop] = value;
+      });
+    }
+    this.component.events.map(evt => {
+      el.addEventListener(evt.event, this);
+    });
   }
 
   componentWillLoad() {
     this.source = unescape(this.source);
+    this.demoProps = Yaml.load(this.props);
   }
 
   render() {
@@ -138,19 +157,7 @@ export class Preview {
             class={styles.eventsCard}
             style={{ display: this.state === 'events' ? 'block' : 'none' }}
           >
-            <picto-preview-events
-              events={[
-                { name: 'foo', value: { foo: 'bar' } },
-                { name: 'bar', value: 1 },
-                { name: 'baz', value: true },
-                { name: 'foo', value: { foo: 'bar' } },
-                { name: 'bar', value: 1 },
-                { name: 'baz', value: true },
-                { name: 'foo', value: { foo: 'bar' } },
-                { name: 'bar', value: 1 },
-                { name: 'baz', value: true },
-              ]}
-            />
+            <picto-preview-events events={this.events} />
           </picto-scrollarea>
           <footer class='card-footer'>
             <a

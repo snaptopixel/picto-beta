@@ -34,25 +34,20 @@ namespace styles {
   tag: 'picto-preview-events',
 })
 export class Events {
-  @Prop() events: Array<{ name: string; value: any }>;
+  @Prop() events: CustomEvent[];
   render() {
     return [
       <picto-styled>
         <table class={styles.table}>
           <tr>
             <th>Event</th>
-            <th>
-              Detail{' '}
-              <a title='Check dev console for more info'>
-                <picto-icon class={styles.tip} name='info-circle' />
-              </a>
-            </th>
+            <th>Detail</th>
           </tr>
           {this.events.map(e => (
             <tr>
-              <td>{e.name}</td>
+              <td>{e.type}</td>
               <td>
-                <picto-code source={JSON.stringify(e.value)} lang='js' />
+                <picto-code source={JSON.stringify(e.detail)} lang='js' />
               </td>
             </tr>
           ))}

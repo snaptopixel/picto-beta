@@ -39,16 +39,16 @@ Displays a menu for your components
 
 ## Properties
 
-| Property  | Attribute | Description | Type                 |
-| --------- | --------- | ----------- | -------------------- |
-| `options` | --        |             | `(IMenu \| ILink)[]` |
+| Property  | Attribute | Description | Type                 | Default |
+| --------- | --------- | ----------- | -------------------- | ------- |
+| `options` | --        |             | `(ILink \| IMenu)[]` | `[]`    |
 
 
 ## Events
 
-| Event         | Detail | Description |
-| ------------- | ------ | ----------- |
-| `linkClicked` | ILink  |             |
+| Event            | Description | Detail |
+| ---------------- | ----------- | ------ |
+| `navLinkClicked` |             | ILink  |
 
 
 ----------------------------------------------

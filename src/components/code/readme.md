@@ -15,10 +15,10 @@ preview:
 
 ## Properties
 
-| Property | Attribute | Description | Type     |
-| -------- | --------- | ----------- | -------- |
-| `lang`   | `lang`    |             | `string` |
-| `source` | `source`  |             | `string` |
+| Property | Attribute | Description               | Type     | Default     |
+| -------- | --------- | ------------------------- | -------- | ----------- |
+| `lang`   | `lang`    | Language for highlighting | `string` | `'html'`    |
+| `source` | `source`  | Source code as a string   | `string` | `undefined` |
 
 
 ----------------------------------------------

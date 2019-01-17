@@ -7,9 +7,11 @@
 
 ## Properties
 
-| Property | Attribute | Description                 | Type     |
-| -------- | --------- | --------------------------- | -------- |
-| `source` | `source`  | The markdown to be rendered | `string` |
+| Property    | Attribute | Description                 | Type             | Default     |
+| ----------- | --------- | --------------------------- | ---------------- | ----------- |
+| `component` | --        |                             | `IComponentMeta` | `undefined` |
+| `source`    | `source`  | The markdown to be rendered | `string`         | `undefined` |
+| `url`       | `url`     |                             | `string`         | `undefined` |
 
 
 ----------------------------------------------

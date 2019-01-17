@@ -1,22 +1,25 @@
 import { Component, Element, Prop } from '@stencil/core';
 import { css } from 'emotion';
-import Yaml from 'js-yaml';
 import Marked from 'marked';
 
 Marked.setOptions({ breaks: true });
 
 const renderer = new Marked.Renderer();
-let scope: any;
+let props = '';
 
 const code: {
   [lang: string]: (src: string, lang: string, isEscaped: boolean) => string;
 } = {
   yaml(src) {
-    scope = Yaml.load(src);
+    props = src;
     return '';
   },
   html(src, lang, isEscaped) {
-    return `<picto-preview source='${escape(src)}'></picto-preview>`;
+    const value = `<picto-preview source='${escape(
+      src,
+    )}' props='${props}'></picto-preview>`;
+    props = '';
+    return value;
   },
   default: renderer.code,
 };
@@ -45,12 +48,22 @@ export class Markdown {
   @Prop({ context: 'resourcesUrl' }) resourcesUrl: string;
   /** The markdown to be rendered */
   @Prop({ mutable: true }) source: string;
+  @Prop() component: IComponentMeta;
 
   @Prop() url: string;
 
   async componentWillLoad() {
     if (this.url) {
       this.source = await fetch(this.url).then(r => r.text());
+    }
+  }
+
+  componentDidLoad() {
+    if (this.component) {
+      const previews = Array.from(this.el.querySelectorAll('picto-preview'));
+      previews.map(p => {
+        p.component = this.component;
+      });
     }
   }
 

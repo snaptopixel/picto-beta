@@ -49,6 +49,7 @@ export class Graph {
       source?: string;
       url?: string;
       vdom?: VNode | VNode[];
+      component?: IComponentMeta;
     };
   } = {};
   indexSrc: string;
@@ -123,6 +124,7 @@ export class Graph {
       }
       this.pages[component.tag] = {
         source: body,
+        component,
       };
       if (attributes.group) {
         if (!grouped[attributes.group]) {
@@ -180,13 +182,19 @@ export class Graph {
           componentProps={{ source: this.indexSrc }}
         />
         {Object.entries(this.pages).map(
-          ([name, { route, url, source, vdom }]) => (
+          ([name, { route, url, source, vdom, component }]) => (
             <stencil-route
               url={route}
               class={styles.body}
               exact={true}
               routeRender={() =>
-                vdom || <picto-markdown url={url} source={source} />
+                vdom || (
+                  <picto-markdown
+                    url={url}
+                    source={source}
+                    component={component}
+                  />
+                )
               }
             />
           ),

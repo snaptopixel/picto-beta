@@ -4,6 +4,10 @@ group: Picto
 
 # picto-icon
 
+```html
+<picto-icon name='anchor'></picto-icon>
+```
+
 
 
 <!-- Auto Generated Below -->
@@ -11,10 +15,10 @@ group: Picto
 
 ## Properties
 
-| Property    | Attribute    | Description | Type                   |
-| ----------- | ------------ | ----------- | ---------------------- |
-| `name`      | `name`       |             | `string`               |
-| `styleType` | `style-type` |             | `"regular" \| "solid"` |
+| Property    | Attribute    | Description | Type                              | Default     |
+| ----------- | ------------ | ----------- | --------------------------------- | ----------- |
+| `name`      | `name`       |             | `string`                          | `undefined` |
+| `styleType` | `style-type` |             | `"brand" \| "regular" \| "solid"` | `'solid'`   |
 
 
 ----------------------------------------------
