@@ -2,14 +2,18 @@ import { Component, Prop } from '@stencil/core';
 import { css } from 'emotion';
 import hljs from 'highlight.js';
 
-namespace styles {
-  export const main = css`
+const styles = {
+  main: css`
     @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700');
     @import url('https://unpkg.com/highlight.js@9.13.1/styles/github.css');
     font-family: 'Roboto Mono', monospace !important;
     line-height: 1.5 !important;
-  `;
-}
+    [inline] & {
+      padding: 0 !important;
+      background: none;
+    }
+  `,
+};
 
 @Component({
   tag: 'picto-code',
@@ -19,6 +23,8 @@ export class Code {
   @Prop() source: string;
   /** Language for highlighting */
   @Prop() lang: string = 'html';
+  /** Display inline without padding or bg color */
+  @Prop({ reflectToAttr: true }) inline: boolean;
 
   srcEl: HTMLPreElement;
 

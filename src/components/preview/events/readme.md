@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type                 | Default     |
-| -------- | --------- | ----------- | -------------------- | ----------- |
-| `events` | --        |             | `CustomEvent<any>[]` | `undefined` |
+| Property | Attribute | Description | Type                | Default     |
+| -------- | --------- | ----------- | ------------------- | ----------- |
+| `events` | --        |             | `IComponentEvent[]` | `undefined` |
 
 
 ----------------------------------------------

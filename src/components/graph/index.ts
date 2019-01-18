@@ -1,3 +1,9 @@
+interface IComponentEvent {
+  event: string;
+  detail: any;
+  when: Date;
+}
+
 interface IComponentMeta {
   docs: string;
   events: Array<{

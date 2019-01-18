@@ -15,10 +15,11 @@ preview:
 
 ## Properties
 
-| Property | Attribute | Description               | Type     | Default     |
-| -------- | --------- | ------------------------- | -------- | ----------- |
-| `lang`   | `lang`    | Language for highlighting | `string` | `'html'`    |
-| `source` | `source`  | Source code as a string   | `string` | `undefined` |
+| Property | Attribute | Description                                | Type      | Default     |
+| -------- | --------- | ------------------------------------------ | --------- | ----------- |
+| `inline` | `inline`  | Display inline without padding or bg color | `boolean` | `undefined` |
+| `lang`   | `lang`    | Language for highlighting                  | `string`  | `'html'`    |
+| `source` | `source`  | Source code as a string                    | `string`  | `undefined` |
 
 
 ----------------------------------------------

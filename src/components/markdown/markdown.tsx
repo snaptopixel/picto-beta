@@ -31,13 +31,13 @@ renderer.code = (source: string, lang: string, isEscaped: boolean) => {
   return code[lang](source, lang, isEscaped);
 };
 
-namespace styles {
-  export const main = css`
+const styles = {
+  main: css`
     display: block;
     font-size: 14px;
     line-height: 1;
-  `;
-}
+  `,
+};
 
 @Component({
   tag: 'picto-markdown',
@@ -99,7 +99,7 @@ export class Markdown {
                   <tr>
                     <td>{p.name}</td>
                     <td>
-                      <code>{p.type}</code>
+                      <picto-code inline source={p.type} lang='ts' />
                     </td>
                     <td>{p.docs}</td>
                   </tr>
@@ -129,7 +129,7 @@ export class Markdown {
                   <tr>
                     <td>{e.event}</td>
                     <td>
-                      <code>{e.detail}</code>
+                      <picto-code inline source={e.detail} lang='ts' />
                     </td>
                   </tr>
                 ))}

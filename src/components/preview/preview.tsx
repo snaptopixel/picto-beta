@@ -38,20 +38,6 @@ namespace styles {
     'card-content',
     css`
       height: 200px;
-      th {
-        position: relative;
-      }
-      td {
-        padding: '0';
-        vertical-align: 'middle';
-      }
-      td:first-of-type {
-        padding-left: 0.5rem;
-        width: 25%;
-      }
-      .hljs {
-        padding: 0.5rem !important;
-      }
     `,
   );
   export const footerItem = classes(
@@ -93,7 +79,7 @@ export class Preview {
   @Prop() component: IComponentMeta;
 
   @State() state: 'preview' | 'source' | 'events' = 'preview';
-  @State() events: CustomEvent[] = [];
+  @State() events: IComponentEvent[] = [];
 
   previewEl: HTMLElement;
   viewedEventsCount = 0;
@@ -116,7 +102,10 @@ export class Preview {
 
   handleEvent(event: CustomEvent) {
     event.stopPropagation();
-    this.events = [...this.events, event];
+    this.events = [
+      { event: event.type, detail: event.detail, when: new Date() },
+      ...this.events,
+    ];
   }
 
   @Watch('component')

@@ -1,56 +1,63 @@
 import { Component, Prop } from '@stencil/core';
-import classes from 'classnames';
 import { css } from 'emotion';
 
-namespace styles {
-  export const table = classes(
-    'table',
-    css`
-      width: 100%;
-      td {
-        padding: 0;
-        vertical-align: middle;
-      }
-      td:first-of-type {
-        padding-left: 0.5rem;
+const styles = {
+  table: css`
+    td {
+      font-size: 0.8em;
+      &:first-of-type {
+        padding-left: 1em;
         width: 25%;
       }
-      .hljs {
-        margin: -0.5rem;
+    }
+    tbody:empty {
+      &:before {
+        content: 'No Events Received';
+        display: block;
+        font-style: italic;
+        color: #999;
+        margin: 20px;
       }
-    `,
-  );
-  export const tip = classes(
-    'has-text-info',
-    'has-text-grey-light',
-    css`
-      position: absolute;
-      margin-top: -0.5em;
-    `,
-  );
-}
+    }
+    tr:nth-child(even) {
+      background: hsl(0, 0%, 96%);
+    }
+  `,
+};
 
 @Component({
   tag: 'picto-preview-events',
 })
 export class Events {
-  @Prop() events: CustomEvent[];
+  @Prop() events: IComponentEvent[];
   render() {
     return [
       <picto-styled>
         <table class={styles.table}>
-          <tr>
-            <th>Event</th>
-            <th>Detail</th>
-          </tr>
-          {this.events.map(e => (
+          <thead>
             <tr>
-              <td>{e.type}</td>
-              <td>
-                <picto-code source={JSON.stringify(e.detail)} lang='js' />
-              </td>
+              <th>Time</th>
+              <th>Event</th>
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {this.events.map(e => (
+              <tr>
+                <td>{e.when.toLocaleString()}</td>
+                <td>
+                  <picto-code
+                    inline
+                    source={JSON.stringify(
+                      { event: e.event, detail: e.detail },
+                      null,
+                      2,
+                    )}
+                    lang='ts'
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </picto-styled>,
     ];
