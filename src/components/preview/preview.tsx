@@ -134,7 +134,15 @@ export class Preview {
             class={styles.previewCard}
             style={{ display: this.state === 'preview' ? null : 'none' }}
           >
-            <div innerHTML={this.source} no-style style={{ width: '100%' }} />
+            <div
+              innerHTML={this.source}
+              no-style
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            />
           </div>
           <div
             class={styles.sourceCard}
