@@ -1,3 +1,7 @@
+---
+group: Picto
+---
+
 # picto-graph-index
 
 

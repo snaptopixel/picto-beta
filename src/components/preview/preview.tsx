@@ -102,6 +102,8 @@ export class Preview {
 
   handleEvent(event: CustomEvent) {
     event.stopPropagation();
+    event.stopImmediatePropagation();
+    event.preventDefault();
     this.events = [
       { event: event.type, detail: event.detail, when: new Date() },
       ...this.events,
@@ -135,14 +137,14 @@ export class Preview {
             style={{ display: this.state === 'preview' ? null : 'none' }}
           >
             <div
-              innerHTML={this.source}
               no-style
               style={{
-                width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
               }}
-            />
+            >
+              <div innerHTML={this.source} />
+            </div>
           </div>
           <div
             class={styles.sourceCard}

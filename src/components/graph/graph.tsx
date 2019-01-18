@@ -155,6 +155,20 @@ export class Graph {
       nav.push(ungrouped);
     }
 
+    ungrouped.links.sort((a: any, b: any) => {
+      if (a.links && b.links) {
+        if (a.label.toUpperCase() < b.label.toUpperCase()) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if (!a.links && b.links) {
+        return 1;
+      } else if (a.links && !b.links) {
+        return -1;
+      }
+    });
+
     nav.map(l => this.parseLink(l));
 
     Object.entries(grouped).map(([key, value]) => {

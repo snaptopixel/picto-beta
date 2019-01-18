@@ -159,7 +159,10 @@ export class Markdown {
                 <tbody>
                   {this.component.events.map(p => (
                     <tr>
-                      <td>{p.event}</td>
+                      <td>
+                        <b>{p.event}</b>
+                        <p>{p.docs}</p>
+                      </td>
                       <td>
                         <picto-code
                           style={{ display: 'inline !important' }}

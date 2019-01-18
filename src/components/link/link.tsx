@@ -5,7 +5,9 @@ import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 })
 export class Link {
   @Element() el: HTMLElement;
+  /** Notifies app to navigate to a page or component */
   @Event() linkClicked: EventEmitter<string>;
+  /** Page id or component name */
   @Prop() to: string;
 
   onClick = (e: UIEvent) => {

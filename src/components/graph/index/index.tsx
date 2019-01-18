@@ -1,4 +1,6 @@
 import { Component, Prop } from '@stencil/core';
+import Bricks from 'bricks.js';
+import classnames from 'classnames';
 import { css } from 'emotion';
 
 function checkerboard(boxSize: number, boxColor: string) {
@@ -28,6 +30,9 @@ const styles = {
       }
     }
   `,
+  card: css`
+    width: 320px;
+  `,
 };
 
 @Component({
@@ -35,6 +40,21 @@ const styles = {
 })
 export class Index {
   @Prop() menu: IMenu;
+  bricksEl: HTMLDivElement;
+  componentDidLoad() {
+    const instance = Bricks({
+      container: this.bricksEl,
+      packed: 'packed',
+      sizes: [
+        { mq: '768px', columns: 1, gutter: 20 },
+        { mq: '1010px', columns: 2, gutter: 20 },
+        { mq: '1360px', columns: 3, gutter: 20 },
+        { mq: '1700px', columns: 4, gutter: 20 },
+      ],
+    });
+    instance.pack();
+    instance.resize(true);
+  }
   render() {
     return (
       <picto-styled>
@@ -44,30 +64,36 @@ export class Index {
             &nbsp;&nbsp;{this.menu.label}
           </h1>
         </div>
-
-        {this.menu.components.map((c, index) => {
-          const CustomTag = c.tag;
-          const { innerHTML, props } = this.menu.links[index].preview;
-          return (
-            <div class='card' style={{ marginBottom: '30px' }}>
-              <div class={`card-image ${styles.preview}`}>
-                {(innerHTML || props) && (
-                  <div no-style>
-                    <CustomTag {...props}>{innerHTML}</CustomTag>
+        <div ref={el => (this.bricksEl = el)}>
+          {this.menu.components.map((c, index) => {
+            const CustomTag = c.tag;
+            const { innerHTML, props, style } = this.menu.links[index].preview;
+            return (
+              <div class={classnames('card', styles.card)}>
+                <div class={`card-image ${styles.preview}`}>
+                  {(innerHTML || props) && (
+                    <div
+                      no-style
+                      style={{ display: 'flex', justifyContent: 'center' }}
+                    >
+                      <CustomTag style={style} {...props}>
+                        {innerHTML}
+                      </CustomTag>
+                    </div>
+                  )}
+                </div>
+                <div class='card-content'>
+                  <div class='content'>
+                    <stencil-route-link url={this.menu.sref + '/' + c.tag}>
+                      <picto-icon name='puzzle-piece' />
+                      &nbsp;&nbsp;{c.tag}
+                    </stencil-route-link>
                   </div>
-                )}
-              </div>
-              <div class='card-content'>
-                <div class='content'>
-                  <stencil-route-link url={this.menu.sref + '/' + c.tag}>
-                    <picto-icon name='puzzle-piece' />
-                    &nbsp;&nbsp;{c.tag}
-                  </stencil-route-link>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </picto-styled>
     );
   }

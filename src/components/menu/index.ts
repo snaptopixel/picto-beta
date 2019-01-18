@@ -8,6 +8,7 @@ interface ILink {
   preview?: {
     innerHTML?: string;
     props?: any;
+    style?: Partial<CSSStyleDeclaration>;
   };
 }
 

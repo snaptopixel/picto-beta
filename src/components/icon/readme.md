@@ -1,5 +1,11 @@
 ---
 group: Picto
+preview:
+  style:
+    fontSize: 48px
+  props:
+    name: github
+    styleType: brand
 ---
 
 # picto-icon
