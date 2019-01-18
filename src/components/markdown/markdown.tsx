@@ -35,7 +35,31 @@ const styles = {
   main: css`
     display: block;
     font-size: 14px;
-    line-height: 1;
+    line-height: 1.5;
+  `,
+  propsTable: css`
+    width: 100%;
+    color: inherit;
+    margin-top: -10px;
+    th {
+      color: inherit !important;
+      text-align: left;
+      padding: 10px;
+    }
+    td {
+      color: #363636;
+      padding: 10px;
+      vertical-align: middle !important;
+      &:first-of-type {
+        width: 40%;
+        p {
+          color: gray;
+        }
+      }
+    }
+    tbody tr:nth-of-type(odd) {
+      background: rgba(255, 255, 255, 0.8);
+    }
   `,
 };
 
@@ -81,61 +105,75 @@ export class Markdown {
     if (this.component) {
       const props = (
         <picto-styled style={{ display: 'block', marginTop: '30px' }}>
-          <div class='content'>
-            <h5>
-              <picto-icon class='has-text-link' name='sliders-h' />
-              &nbsp;&nbsp;Props
-            </h5>
-            <table>
-              <thead>
-                <tr>
-                  <th style={{ width: '25%' }}>Name</th>
-                  <th style={{ width: '25%' }}>Type</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.component.props.map(p => (
+          <h3 class='title is-6'>
+            <picto-icon name='cogs' class='has-text-link' />
+            &nbsp;Props
+          </h3>
+          <article class='message is-size-7'>
+            <div class='message-body'>
+              <table class={styles.propsTable}>
+                <thead>
                   <tr>
-                    <td>{p.name}</td>
-                    <td>
-                      <picto-code inline source={p.type} lang='ts' />
-                    </td>
-                    <td>{p.docs}</td>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Default</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {this.component.props.map(p => (
+                    <tr>
+                      <td>
+                        <b>{p.name}</b>
+                        <p>{p.docs}</p>
+                      </td>
+                      <td>
+                        <picto-code inline source={p.type} lang='ts' />
+                      </td>
+                      <td>
+                        <picto-code inline source={p.default} lang='ts' />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
         </picto-styled>
       );
 
       const events = (
         <picto-styled style={{ display: 'block', marginTop: '30px' }}>
-          <div class='content'>
-            <h5>
-              <picto-icon class='has-text-link' name='broadcast-tower' />
-              &nbsp;&nbsp;Events
-            </h5>
-            <table>
-              <thead>
-                <tr>
-                  <th style={{ width: '25%' }}>Event</th>
-                  <th>Detail</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.component.events.map(e => (
+          <h3 class='title is-6'>
+            <picto-icon name='broadcast-tower has-text-link' />
+            &nbsp;Events
+          </h3>
+          <article class='message is-size-7'>
+            <div class='message-body'>
+              <table class={styles.propsTable}>
+                <thead>
                   <tr>
-                    <td>{e.event}</td>
-                    <td>
-                      <picto-code inline source={e.detail} lang='ts' />
-                    </td>
+                    <th>Name</th>
+                    <th>Detail</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {this.component.events.map(p => (
+                    <tr>
+                      <td>{p.event}</td>
+                      <td>
+                        <picto-code
+                          style={{ display: 'inline !important' }}
+                          inline
+                          source={p.detail}
+                          lang='ts'
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
         </picto-styled>
       );
 

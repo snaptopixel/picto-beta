@@ -10,7 +10,9 @@ const styles = {
     line-height: 1.5 !important;
     [inline] & {
       padding: 0 !important;
-      background: none;
+      margin: 0 !important;
+      display: inline-block important;
+      background: none !important;
     }
   `,
 };
