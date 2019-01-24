@@ -40,3 +40,9 @@ interface IComponentManifest {
   };
   components: IComponentMeta[];
 }
+
+namespace MyComponent {
+  export interface ISomeThing {
+    foo: string;
+  }
+}

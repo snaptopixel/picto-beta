@@ -5,8 +5,10 @@ import {
   EventEmitter,
   Prop,
   State,
+  Watch,
 } from '@stencil/core';
 import { css } from 'emotion';
+import Fuse from 'fuse.js';
 
 const styles = {
   title: css`
@@ -28,6 +30,34 @@ export class Menu {
   @Event() navLinkClicked: EventEmitter<ILink>;
   @Prop() options: Array<IMenu | ILink> = [];
   @State() selectedLink: ILink;
+  @State() visibleOptions: IMenu[];
+  rawLinks: ILink[] = [];
+  searchEl: HTMLInputElement;
+
+  onSearchInput = (event: Event) => {
+    const options = {
+      minMatchCharLength: 2,
+      keys: ['label'] as any,
+    };
+    if (this.searchEl.value) {
+      const links = this.rawLinks.filter(l => {
+        return l.label
+          .toLowerCase()
+          .includes(this.searchEl.value.toLowerCase());
+      });
+      if (links.length) {
+        this.visibleOptions = [{ label: 'Results' }, { links }];
+      } else {
+        this.visibleOptions = [
+          {
+            links: [{ label: 'No results…', icon: 'exclamation-triangle' }],
+          },
+        ];
+      }
+    } else {
+      this.visibleOptions = this.options;
+    }
+  };
   renderLink(link: IMenu, showActive = true) {
     return link.sref ? (
       <stencil-route-link
@@ -84,13 +114,40 @@ export class Menu {
       </a>
     );
   }
+  @Watch('options')
+  componentWillLoad() {
+    this.visibleOptions = this.options;
+    this.rawLinks = [];
+    const parseLink = (link: IMenu) => {
+      if (link.href || link.sref) {
+        this.rawLinks.push(link);
+      }
+      if (link.links) {
+        link.links.map(parseLink);
+      }
+    };
+    this.options.map(parseLink);
+  }
   render() {
     return [
       <picto-styled>
         <aside class='menu is-size-7'>
           <ul class='menu-list'>
             <li>
-              {this.options.map((opt: IMenu) => {
+              <p class='control has-icons-left has-icons-right'>
+                <input
+                  class='input is-small'
+                  style={{ marginBottom: '10px' }}
+                  type='text'
+                  placeholder='Find…'
+                  ref={el => (this.searchEl = el)}
+                  onInput={this.onSearchInput}
+                />
+                <span class='icon is-small is-left'>
+                  <i class='fas fa-search' />
+                </span>
+              </p>
+              {this.visibleOptions.map((opt: IMenu) => {
                 if (!opt.links) {
                   return (
                     <p class={`menu-label ${styles.title}`}>{opt.label}</p>

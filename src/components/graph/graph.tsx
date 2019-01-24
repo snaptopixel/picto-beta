@@ -1,4 +1,5 @@
-import { Component, Element, Listen, Prop } from '@stencil/core';
+import * as resource from '@/components/graph/resource';
+import { Component, Element, Listen, Prop, State } from '@stencil/core';
 import { VNode } from '@stencil/core/dist/declarations';
 import { RouterHistory } from '@stencil/router';
 import { css } from 'emotion';
@@ -42,7 +43,9 @@ export class Graph {
 
   @Prop({ context: 'resourcesUrl' }) resourcesUrl: string;
 
-  menuOptions: Array<IMenu | ILink>;
+  @State() menuOptions: Array<IMenu | ILink>;
+  @State() indexSrc: string;
+
   pages: {
     [name: string]: {
       route?: string;
@@ -52,8 +55,21 @@ export class Graph {
       component?: IComponentMeta;
     };
   } = {};
-  indexSrc: string;
+
   history: RouterHistory;
+  indexRaw: string;
+
+  setManifest = (data: IComponentManifest) => {
+    this.manifest = data;
+    this.parseManifest();
+  };
+
+  setIndex = (data: string) => {
+    this.indexRaw = data;
+    this.parseManifest();
+  };
+
+  manifest: IComponentManifest;
 
   parseLink(link: IMenu, route = '') {
     if (link.href || (!link.links && Object.keys(link).length === 1)) {
@@ -79,7 +95,7 @@ export class Graph {
       } else {
         this.pages[link.page] = {
           route: link.sref,
-          url: `${this.resourcesUrl}pages/${link.page}.md`,
+          url: `${this.resourcesUrl}pages/${route}.md`,
         };
       }
     }
@@ -88,36 +104,26 @@ export class Graph {
     }
   }
 
-  @Listen('navLinkClicked')
-  onNavLink({ detail: link }: CustomEvent<ILink>) {
-    if (link.href) {
-      window.open(link.href);
+  parseManifest() {
+    if (!this.indexRaw || !this.manifest) {
+      return;
     }
-  }
 
-  @Listen('linkClicked')
-  onLinkClicked({ detail: to }: CustomEvent<string>) {
-    this.history.push(this.pages[to].route);
-  }
+    const config = frontMatter<{ labels: any; menu: IMenu[] }>(this.indexRaw);
+    const { labels, menu } = config.attributes;
 
-  async componentWillLoad() {
-    const [manifest, content] = await Promise.all<IComponentManifest, string>([
-      fetch(this.resourcesUrl + 'components.json').then(r => r.json()),
-      fetch(this.resourcesUrl + 'pages/index.md').then(r => r.text()),
-    ]);
-    const config = frontMatter(content);
-    const nav = config.attributes as Array<IMenu | ILink>;
+    this.pages = {};
     this.indexSrc = config.body;
 
     const grouped: { [name: string]: IMenu } = {};
 
-    nav.push({ label: 'Components' });
+    menu.push({ label: labels.menu.components });
 
     const ungrouped: IMenu = {
       links: [],
     };
 
-    manifest.components.map(component => {
+    this.manifest.components.map(component => {
       const { attributes, body } = frontMatter(component.readme);
       if (attributes.hide) {
         return;
@@ -126,33 +132,29 @@ export class Graph {
         source: body,
         component,
       };
-      if (attributes.group) {
-        if (!grouped[attributes.group]) {
-          grouped[attributes.group] = {
-            label: attributes.group,
-            links: [] as ILink[],
-            icon: 'archive',
-            components: [],
-          };
-          ungrouped.links.push(grouped[attributes.group]);
-        }
-        grouped[attributes.group].components.push(component);
-        grouped[attributes.group].links.push({
-          label: component.tag,
-          icon: 'puzzle-piece',
-          preview: attributes.preview || {},
-          page: component.tag,
-        });
-      } else {
-        ungrouped.links.push({
-          label: component.tag,
-          page: component.tag,
-        });
+      if (!attributes.group) {
+        attributes.group = labels.menu.ungrouped;
       }
+      if (!grouped[attributes.group]) {
+        grouped[attributes.group] = {
+          label: attributes.group,
+          links: [] as ILink[],
+          icon: 'archive',
+          components: [],
+        };
+        ungrouped.links.push(grouped[attributes.group]);
+      }
+      grouped[attributes.group].components.push(component);
+      grouped[attributes.group].links.push({
+        label: component.tag,
+        icon: 'puzzle-piece',
+        preview: attributes.preview || {},
+        page: component.tag,
+      });
     });
 
     if (ungrouped.links.length) {
-      nav.push(ungrouped);
+      menu.push(ungrouped);
     }
 
     ungrouped.links.sort((a: any, b: any) => {
@@ -169,17 +171,43 @@ export class Graph {
       }
     });
 
-    nav.map(l => this.parseLink(l));
+    menu.map(l => this.parseLink(l));
 
     Object.entries(grouped).map(([key, value]) => {
-      this.pages[key] = {
+      this.pages[kebabCase(key)] = {
         route: value.sref,
         vdom: <picto-graph-index menu={value} />,
       };
     });
 
-    this.menuOptions = nav;
+    this.menuOptions = menu;
   }
+
+  @Listen('navLinkClicked')
+  onNavLink({ detail: link }: CustomEvent<ILink>) {
+    if (link.href) {
+      window.open(link.href);
+    }
+  }
+
+  @Listen('linkClicked')
+  onLinkClicked({ detail: to }: CustomEvent<string>) {
+    this.history.push(this.pages[to].route);
+  }
+
+  async componentWillLoad() {
+    const allResources = await Promise.all([
+      resource.open(this.resourcesUrl + 'components.json', this.setManifest),
+      resource.open(this.resourcesUrl + 'pages/index.md', this.setIndex),
+    ]);
+    return allResources;
+  }
+
+  componentDidUnload() {
+    resource.close(this.resourcesUrl + 'components.json');
+    resource.close(this.resourcesUrl + 'pages/index.md');
+  }
+
   render() {
     return [
       <stencil-router class={styles.host}>

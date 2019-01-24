@@ -1,7 +1,8 @@
-import { Component, Element, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Listen, Prop, State, Watch } from '@stencil/core';
 import classes from 'classnames';
 import { css } from 'emotion';
 import Yaml from 'js-yaml';
+import Popper from 'popper.js';
 
 function checkerboard(boxSize: number, boxColor: string) {
   return css`
@@ -14,8 +15,8 @@ function checkerboard(boxSize: number, boxColor: string) {
   `;
 }
 
-namespace styles {
-  export const previewCard = classes(
+const styles = {
+  previewCard: classes(
     'card-content',
     css`
       display: flex;
@@ -23,24 +24,41 @@ namespace styles {
       justify-content: center;
       padding: 1.5rem;
       background-color: white;
+      position: relative;
       ${checkerboard(20, 'rgba(0, 0, 0, .05)')};
+      .tip {
+        transition: all 0.5s;
+        position: absolute;
+        transform: translateX(10px);
+        opacity: 0;
+        top: -30px;
+        right: 0;
+        pointer-events: none;
+      }
+      &:hover .tip {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      [menu-visible] &:hover .tip {
+        opacity: 0;
+      }
     `,
-  );
-  export const sourceCard = classes(
+  ),
+  sourceCard: classes(
     'card-content',
     css`
       .hljs {
         margin: -1.5rem;
       }
     `,
-  );
-  export const eventsCard = classes(
+  ),
+  eventsCard: classes(
     'card-content',
     css`
       height: 200px;
     `,
-  );
-  export const footerItem = classes(
+  ),
+  footerItem: classes(
     'card-footer-item',
     'is-size-7',
     css`
@@ -50,8 +68,8 @@ namespace styles {
         box-shadow: 0 1px inset;
       }
     `,
-  );
-  export const footerTag = classes(
+  ),
+  footerTag: classes(
     'tag',
     'is-link',
     'is-rounded',
@@ -65,8 +83,8 @@ namespace styles {
         display: none !important;
       }
     `,
-  );
-}
+  ),
+};
 
 @Component({
   tag: 'picto-preview',
@@ -75,15 +93,22 @@ export class Preview {
   @Element() el: HTMLElement;
 
   @Prop({ mutable: true }) source: string;
+  @Prop({ mutable: true, reflectToAttr: true }) menuVisible = false;
   @Prop() props: string;
   @Prop() component: IComponentMeta;
 
   @State() state: 'preview' | 'source' | 'events' = 'preview';
   @State() events: IComponentEvent[] = [];
+  @State() demoProps: { [prop: string]: any };
 
   previewEl: HTMLElement;
   viewedEventsCount = 0;
-  demoProps: { [prop: string]: any };
+
+  rightClick: MouseEvent;
+  menuEl: HTMLElement;
+  menuPopper: Popper;
+  menuTarget: HTMLElement;
+  previewProps: IPreviewProp[];
 
   get eventCount() {
     return this.state === 'events' ||
@@ -110,17 +135,63 @@ export class Preview {
     ];
   }
 
+  showPropsMenu(e: MouseEvent) {
+    const bounds = this.el.getBoundingClientRect();
+    this.menuTarget.style.left = e.pageX - bounds.left + 'px';
+    this.menuTarget.style.top = e.pageY - bounds.top + 'px';
+    this.menuPopper.update();
+    this.menuVisible = true;
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  @Watch('demoProps')
+  setProps() {
+    if (!this.component) {
+      return;
+    }
+    const el: any = this.el.querySelector(this.component.tag);
+    this.previewProps = this.component.props.reduce(
+      (props, prop) => {
+        const p: IPreviewProp = { name: prop.name, type: prop.type };
+        props.push(p);
+        if (this.demoProps && this.demoProps[prop.name]) {
+          p.value = this.demoProps[prop.name];
+        } else {
+          const curValue = el[prop.name];
+          const defaultValue = new Function(prop.default)();
+          p.value =
+            JSON.stringify(curValue) !== JSON.stringify(prop.default)
+              ? curValue
+              : defaultValue;
+        }
+        return props;
+      },
+      [] as IPreviewProp[],
+    );
+
+    this.previewProps.map(prop => {
+      el[prop.name] = prop.value;
+    });
+  }
+
   @Watch('component')
   onComponent() {
     const el: any = this.el.querySelector(this.component.tag);
-    if (this.demoProps) {
-      Object.entries(this.demoProps).map(([prop, value]) => {
-        el[prop] = value;
-      });
-    }
+    this.setProps();
     this.component.events.map(evt => {
       el.addEventListener(evt.event, this);
     });
+  }
+
+  @Listen('body:click')
+  @Listen('body:contextmenu')
+  onClick(event: MouseEvent) {
+    const source = event.target as HTMLElement;
+    const parent = source.closest('picto-props-menu');
+    if (parent !== this.menuEl || source.hasAttribute('close-menu')) {
+      this.menuVisible = false;
+    }
   }
 
   componentWillLoad() {
@@ -128,14 +199,52 @@ export class Preview {
     this.demoProps = Yaml.load(unescape(this.props));
   }
 
+  componentDidLoad() {
+    this.menuPopper = new Popper(this.menuTarget, this.menuEl, {
+      placement: 'bottom-start',
+      modifiers: {
+        flip: {
+          behavior: ['right'],
+        },
+      },
+    });
+  }
+
+  hostData() {
+    return {
+      class: css`
+        position: relative;
+      `,
+    };
+  }
+
   render() {
     return [
       <picto-styled>
+        <div
+          ref={el => (this.menuTarget = el)}
+          style={{ position: 'absolute' }}
+        />
+        <picto-props-menu
+          style={{
+            zIndex: '1',
+            visibility: this.menuVisible ? 'visible' : 'hidden',
+            boxShadow: '0 5px 10px rgba(0,0,0,0.1)',
+            borderRadius: '8px',
+          }}
+          ref={(el: HTMLElement) => (this.menuEl = el)}
+          props={this.previewProps}
+        />
         <div class='card'>
           <div
+            onContextMenu={e => this.showPropsMenu(e)}
             class={styles.previewCard}
             style={{ display: this.state === 'preview' ? null : 'none' }}
           >
+            <picto-styled class='tip has-text-grey-light'>
+              <picto-icon name='mouse-pointer' />
+              Right-click to edit props
+            </picto-styled>
             <div
               no-style
               style={{

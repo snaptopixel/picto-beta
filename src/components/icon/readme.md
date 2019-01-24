@@ -11,10 +11,8 @@ preview:
 # picto-icon
 
 ```html
-<picto-icon name='anchor'></picto-icon>
+<picto-icon name='anchor' style='font-size: 48px;'></picto-icon>
 ```
-
-
 
 <!-- Auto Generated Below -->
 
@@ -23,6 +21,9 @@ preview:
 
 | Property    | Attribute    | Description | Type                              | Default     |
 | ----------- | ------------ | ----------- | --------------------------------- | ----------- |
+| `bar`       | `bar`        |             | `number`                          | `undefined` |
+| `cool`      | `cool`       |             | `boolean`                         | `undefined` |
+| `foo`       | `foo`        |             | `boolean`                         | `undefined` |
 | `name`      | `name`       |             | `string`                          | `undefined` |
 | `styleType` | `style-type` |             | `"brand" \| "regular" \| "solid"` | `'solid'`   |
 

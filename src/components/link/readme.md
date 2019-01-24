@@ -26,9 +26,9 @@ Use this component to easily create links within your picto app. Using a compone
 
 ## Events
 
-| Event         | Description                                     | Detail |
-| ------------- | ----------------------------------------------- | ------ |
-| `linkClicked` | Notifies app to navigate to a page or component | string |
+| Event         | Description                                     | Type                  |
+| ------------- | ----------------------------------------------- | --------------------- |
+| `linkClicked` | Notifies app to navigate to a page or component | `CustomEvent<string>` |
 
 
 ----------------------------------------------

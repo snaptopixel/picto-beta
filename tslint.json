@@ -4,6 +4,7 @@
     "max-classes-per-file": false,
     "member-access": false,
     "member-ordering": false,
+    "function-constructor": false,
     "no-implicit-dependencies": false,
     "no-namespace": false,
     "no-submodule-imports": false,

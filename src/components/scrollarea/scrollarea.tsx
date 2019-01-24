@@ -65,7 +65,7 @@ export class ScrollArea {
     const ch = this.scrollEl.clientHeight;
     const sh = this.scrollEl.scrollHeight;
     this.setAttr('scroll-top', st > 0);
-    this.setAttr('scroll-bottom', sh - st !== ch);
+    this.setAttr('scroll-bottom', sh - st > ch);
   };
 
   setAttr(attr: string, value: boolean) {
@@ -77,7 +77,7 @@ export class ScrollArea {
   }
 
   componentDidLoad() {
-    this.trackScrolling();
+    this.scrollListener();
   }
 
   hostData() {

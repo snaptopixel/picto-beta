@@ -1,34 +1,40 @@
+import * as resource from '@/components/graph/resource';
 import { Component, Element, Prop } from '@stencil/core';
 import { css } from 'emotion';
 import Marked from 'marked';
 
 Marked.setOptions({ breaks: true });
 
+// In order to render previews we create a new "renderer" for Marked
 const renderer = new Marked.Renderer();
+// This variable will contain yaml for configuring previews
 let previewProps = '';
-
-const code: {
-  [lang: string]: (src: string, lang: string, isEscaped: boolean) => string;
-} = {
-  yaml(src) {
-    previewProps = src;
-    return '';
-  },
-  html(src, lang, isEscaped) {
-    const value = `<picto-preview source='${escape(src)}' props='${escape(
-      previewProps,
-    )}'></picto-preview>`;
-    previewProps = '';
-    return value;
-  },
-  default: renderer.code,
+// Use html comments <!-- --> to hold preview props
+const html = renderer.html;
+// When parsing a comment, save it's contents for the next preview
+renderer.html = (source: string) => {
+  const parsed = html(source);
+  const comment = parsed.match(/<!--([^]+?)-->/);
+  if (comment) {
+    previewProps = comment[1];
+  }
+  return parsed;
 };
 
-renderer.code = (source: string, lang: string, isEscaped: boolean) => {
-  if (!code[lang]) {
-    lang = 'default';
+// Use html code blocks ```html to hold preview markup
+const code = renderer.code;
+// When parsing an html code block, create markup for the preview
+renderer.code = (src: string, lang: string, isEscaped: boolean) => {
+  switch (lang) {
+    case 'html':
+      const value = `<picto-preview source='${escape(src)}' props='${escape(
+        previewProps,
+      )}'></picto-preview>`;
+      previewProps = '';
+      return value;
+    default:
+      return code(src, lang, isEscaped);
   }
-  return code[lang](source, lang, isEscaped);
 };
 
 const styles = {
@@ -78,7 +84,7 @@ export class Markdown {
 
   async componentWillLoad() {
     if (this.url) {
-      this.source = await fetch(this.url).then(r => r.text());
+      return resource.open(this.url, src => (this.source = src));
     }
   }
 
@@ -88,6 +94,12 @@ export class Markdown {
       previews.map(p => {
         p.component = this.component;
       });
+    }
+  }
+
+  componentDidUnload() {
+    if (this.url) {
+      resource.close(this.url);
     }
   }
 

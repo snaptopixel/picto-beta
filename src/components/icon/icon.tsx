@@ -1,7 +1,7 @@
 import { Component, Prop } from '@stencil/core';
-import { css } from 'emotion';
+import { injectGlobal } from 'emotion';
 
-const icons = css`
+const icons = injectGlobal`
   @import url('https://use.fontawesome.com/releases/v5.6.1/css/all.css');
 `;
 
@@ -11,6 +11,9 @@ const icons = css`
 export class Icon {
   @Prop() name: string;
   @Prop() styleType: 'solid' | 'regular' | 'brand' = 'solid';
+  @Prop() cool: boolean;
+  @Prop() foo: boolean;
+  @Prop() bar: number;
 
   styleClasses = {
     solid: 'fas',

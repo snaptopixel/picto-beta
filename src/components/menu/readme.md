@@ -6,12 +6,12 @@ preview:
       - label: Label
       - links:
         - label: Link
-          url: https://stenciljs.com
+          href: https://stenciljs.com
         - label: Submenu (active due to route)
           sref: /global
           links:
           - label: URL Link
-            url: https://www.google.com
+            href: https://www.google.com
           - label: Page Link
             sref: /
             
@@ -22,16 +22,22 @@ preview:
 
 Displays a menu for your components
 
+<!--
+options:
+  - label: Label
+  - links:
+    - label: Link
+      href: https://stenciljs.com
+    - label: Submenu (active due to route)
+      sref: /global
+      links:
+      - label: URL Link
+        href: https://www.google.com
+      - label: Page Link
+        sref: /
+-->
 ```html
-<picto-menu>
-  <section>
-    <label>Components</label>
-    <nav>
-      <label>Controls</label> <a href="#">Button</a> <a href="#">Label</a>
-      <a href="#">Thing</a>
-    </nav>
-  </section>
-</picto-menu>
+<picto-menu></picto-menu>
 ```
 
 <!-- Auto Generated Below -->
@@ -46,9 +52,9 @@ Displays a menu for your components
 
 ## Events
 
-| Event            | Description | Detail |
-| ---------------- | ----------- | ------ |
-| `navLinkClicked` |             | ILink  |
+| Event            | Description | Type                 |
+| ---------------- | ----------- | -------------------- |
+| `navLinkClicked` |             | `CustomEvent<ILink>` |
 
 
 ----------------------------------------------

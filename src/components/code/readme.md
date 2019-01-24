@@ -7,7 +7,7 @@ preview:
 ---
 
 # picto-code
-
+Renders code with Highlight.js
 
 
 <!-- Auto Generated Below -->

@@ -8,6 +8,10 @@ export const config: Config = {
       src: 'pages',
       dest: 'build/picto/pages',
     },
+    {
+      src: 'pages',
+      dest: '../install/pages',
+    },
   ],
   devServer: {
     port: 3333,

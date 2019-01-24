@@ -13,6 +13,7 @@ const styles = {
       margin: 0 !important;
       display: inline-block important;
       background: none !important;
+      white-space: pre-wrap;
     }
   `,
 };

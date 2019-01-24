@@ -12,16 +12,28 @@ const reset = css`
 })
 export class Styled {
   @Element() el: HTMLElement;
-  componentDidLoad() {
+
+  observer: MutationObserver;
+  applyStyle = (node: Element) => {
     const scopeId = (this.el as any)['s-sc'];
-    function applyStyle(node: Element) {
-      if (!node.hasAttribute('no-style') && node.nodeName !== 'PICTO-RESET') {
-        node.classList.add(scopeId);
-        Array.from(node.children).map(applyStyle);
-      } else if (node.hasAttribute('no-style')) {
-        node.classList.add(reset);
-      }
+    if (!node.hasAttribute('no-style') && node.nodeName !== 'PICTO-RESET') {
+      node.classList.add(scopeId);
+      Array.from(node.children).map(this.applyStyle);
+    } else if (node.hasAttribute('no-style')) {
+      node.classList.add(reset);
     }
-    Array.from(this.el.children).map(applyStyle);
+  };
+
+  componentDidLoad() {
+    const config = { attributes: false, childList: true, subtree: true };
+    this.observer = new MutationObserver((mutationsList, observer) => {
+      Array.from(this.el.children).map(this.applyStyle);
+    });
+    this.observer.observe(this.el, config);
+    Array.from(this.el.children).map(this.applyStyle);
+  }
+
+  componentDidUnload() {
+    this.observer.disconnect();
   }
 }
