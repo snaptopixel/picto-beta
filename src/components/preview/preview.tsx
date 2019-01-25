@@ -159,7 +159,9 @@ export class Preview {
           p.value = this.demoProps[prop.name];
         } else {
           const curValue = el[prop.name];
-          const defaultValue = new Function(prop.default)();
+          const defaultValue = new Function(
+            `try { return ${prop.default} } catch { return 'unknown'}`,
+          )();
           p.value =
             JSON.stringify(curValue) !== JSON.stringify(prop.default)
               ? curValue
