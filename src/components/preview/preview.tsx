@@ -126,9 +126,6 @@ export class Preview {
   }
 
   handleEvent(event: CustomEvent) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    event.preventDefault();
     this.events = [
       { event: event.type, detail: event.detail, when: new Date() },
       ...this.events,
