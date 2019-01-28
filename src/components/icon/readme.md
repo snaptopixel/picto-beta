@@ -9,7 +9,7 @@ preview:
 ---
 
 # picto-icon
-The icon is p cool my guy
+Uses font-awesome to render icons
 ```html
 <div ref='foo'>
   <div>

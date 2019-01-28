@@ -5,7 +5,10 @@ import docsRenderer from './src/picto/renderer';
 export const config: Config = {
   namespace: 'picto',
   outputTargets: [
-    { type: 'docs-custom', generator: docsRenderer },
+    {
+      type: 'docs-custom',
+      generator: docsRenderer('src/picto', 'docs/build/picto'),
+    },
     { type: 'www', dir: 'docs' },
   ],
   devServer: {

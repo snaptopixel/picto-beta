@@ -18,4 +18,4 @@ menu:
 
 # 🎉 Welcome to Picto!
 
-This is the index page for picto
+This is the index page for picto. And it works.

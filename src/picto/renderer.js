@@ -6,16 +6,16 @@ const cleanup = require('node-cleanup');
 const WebSocket = require('ws');
 const portfinder = require('portfinder');
 
-const pictoRoot = path.resolve('docs/build/picto');
 const package = fs.readJsonSync('package.json');
-let firstRun = true;
 const devMode = process.env.NODE_ENV !== 'production';
+
+let firstRun = true;
 
 function log(msg) {
   console.log(chalk.dim('[Picto]\t') + msg);
 }
 
-async function startServer() {
+async function startServer(src, dest) {
   portfinder.basePort = 3000;
   portfinder.highestPort = 3333;
 
@@ -29,7 +29,7 @@ async function startServer() {
   const wss = new WebSocket.Server({
     port
   });
-  const watcher = chokidar.watch(__dirname + '/pages/**/*.md', {
+  const watcher = chokidar.watch(src + '/pages/**/*.md', {
     persistent: true,
   });
 
@@ -43,7 +43,7 @@ async function startServer() {
 
   watcher.on('change', file => {
     log('Page updated: ' + chalk.cyan(file.replace(__dirname, '')));
-    fs.copySync(file, pictoRoot + file.replace(__dirname, ''));
+    fs.copySync(file, dest + file.replace(__dirname, ''));
     sendUpdate(file, fs.readFileSync(file).toString())
   });
 
@@ -70,41 +70,45 @@ async function startServer() {
 
 let server;
 
-module.exports = async function docsRenderer(components) {
+module.exports = function makeRenderer(pictoSrc, pictoDest) {
+  pictoSrc = path.resolve(pictoSrc);
+  pictoDest = path.resolve(pictoDest);
 
-  if (firstRun) {
-    fs.copySync(__dirname + '/pages', pictoRoot + '/pages');
-    if (devMode) {
-      server = await startServer();
+  return async function docsRenderer(components) {
+    if (firstRun) {
+      fs.copySync(pictoSrc + '/pages', pictoDest + '/pages');
+      if (devMode) {
+        server = await startServer(pictoSrc, pictoDest);
+      }
     }
-  }
 
-  const {
-    name,
-    description,
-    version,
-    homepage
-  } = package;
-
-  const config = {
-    picto: {
-      description,
-      homepage,
+    const {
       name,
-      port: server ? server.port : null,
+      description,
       version,
-    },
-    ...components
-  };
+      homepage
+    } = package;
 
-  await fs.writeJson(pictoRoot + '/config.json', config, {
-    spaces: 2
-  });
+    const config = {
+      picto: {
+        description,
+        homepage,
+        name,
+        port: server ? server.port : null,
+        version,
+      },
+      ...components
+    };
 
-  if (!firstRun && devMode) {
-    log('Config updated');
-    server.sendUpdate(pictoRoot + '/config.json', config);
+    await fs.writeJson(pictoDest + '/config.json', config, {
+      spaces: 2
+    });
+
+    if (!firstRun && devMode) {
+      log('Config updated');
+      server.sendUpdate(pictoDest + '/config.json', config);
+    }
+
+    firstRun = false;
   }
-
-  firstRun = false;
 }
