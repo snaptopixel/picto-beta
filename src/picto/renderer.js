@@ -42,8 +42,8 @@ async function startServer(src, dest) {
   }
 
   watcher.on('change', file => {
-    log('Page updated: ' + chalk.cyan(file.replace(__dirname, '')));
-    fs.copySync(file, dest + file.replace(__dirname, ''));
+    log('Page updated: ' + chalk.cyan(file.replace(src, '')));
+    fs.copySync(file, dest + file.replace(src, ''));
     sendUpdate(file, fs.readFileSync(file).toString())
   });
 
