@@ -95,7 +95,7 @@ export class Graph {
       } else {
         this.pages[link.page] = {
           route: link.sref,
-          url: `${this.resourcesUrl}pages/${route}.md`,
+          url: `${this.resourcesUrl}picto/pages/${route}.md`,
         };
       }
     }
@@ -197,15 +197,15 @@ export class Graph {
 
   async componentWillLoad() {
     const allResources = await Promise.all([
-      resource.open(this.resourcesUrl + 'config.json', this.setManifest),
-      resource.open(this.resourcesUrl + 'pages/index.md', this.setIndex),
+      resource.open(this.resourcesUrl + 'picto/config.json', this.setManifest),
+      resource.open(this.resourcesUrl + 'picto/pages/index.md', this.setIndex),
     ]);
     return allResources;
   }
 
   componentDidUnload() {
-    resource.close(this.resourcesUrl + 'config.json');
-    resource.close(this.resourcesUrl + 'pages/index.md');
+    resource.close(this.resourcesUrl + 'picto/config.json');
+    resource.close(this.resourcesUrl + 'picto/pages/index.md');
   }
 
   render() {

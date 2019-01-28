@@ -76,7 +76,7 @@ module.exports = function makeRenderer(pictoSrc, pictoDest) {
 
   return async function docsRenderer(components) {
     if (firstRun) {
-      fs.copySync(pictoSrc + '/pages', pictoDest + '/pages');
+      fs.copySync(pictoSrc + '/pages', pictoDest + '/picto/pages');
       if (devMode) {
         server = await startServer(pictoSrc, pictoDest);
       }
@@ -100,13 +100,13 @@ module.exports = function makeRenderer(pictoSrc, pictoDest) {
       ...components
     };
 
-    await fs.writeJson(pictoDest + '/config.json', config, {
+    await fs.writeJson(pictoDest + '/picto/config.json', config, {
       spaces: 2
     });
 
     if (!firstRun && devMode) {
       log('Config updated');
-      server.sendUpdate(pictoDest + '/config.json', config);
+      server.sendUpdate(pictoDest + '/picto/config.json', config);
     }
 
     firstRun = false;
