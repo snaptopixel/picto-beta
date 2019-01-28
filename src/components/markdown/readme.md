@@ -11,11 +11,11 @@ group: Picto
 
 ## Properties
 
-| Property    | Attribute | Description                 | Type             | Default     |
-| ----------- | --------- | --------------------------- | ---------------- | ----------- |
-| `component` | --        |                             | `IComponentMeta` | `undefined` |
-| `source`    | `source`  | The markdown to be rendered | `string`         | `undefined` |
-| `url`       | `url`     |                             | `string`         | `undefined` |
+| Property    | Attribute | Description                                  | Type             | Default     |
+| ----------- | --------- | -------------------------------------------- | ---------------- | ----------- |
+| `component` | --        | Component metadata, used to render props etc | `IComponentMeta` | `undefined` |
+| `source`    | `source`  | The markdown to be rendered                  | `string`         | `undefined` |
+| `url`       | `url`     | Url of a markdown file to load               | `string`         | `undefined` |
 
 
 ----------------------------------------------

@@ -8,7 +8,6 @@ import {
   Watch,
 } from '@stencil/core';
 import { css } from 'emotion';
-import Fuse from 'fuse.js';
 
 const styles = {
   title: css`

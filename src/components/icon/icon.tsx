@@ -11,9 +11,6 @@ const icons = injectGlobal`
 export class Icon {
   @Prop() name: string;
   @Prop() styleType: 'solid' | 'regular' | 'brand' = 'solid';
-  @Prop() cool: boolean;
-  @Prop() foo: boolean;
-  @Prop() bar: number;
 
   styleClasses = {
     solid: 'fas',

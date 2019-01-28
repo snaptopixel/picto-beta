@@ -197,14 +197,14 @@ export class Graph {
 
   async componentWillLoad() {
     const allResources = await Promise.all([
-      resource.open(this.resourcesUrl + 'components.json', this.setManifest),
+      resource.open(this.resourcesUrl + 'config.json', this.setManifest),
       resource.open(this.resourcesUrl + 'pages/index.md', this.setIndex),
     ]);
     return allResources;
   }
 
   componentDidUnload() {
-    resource.close(this.resourcesUrl + 'components.json');
+    resource.close(this.resourcesUrl + 'config.json');
     resource.close(this.resourcesUrl + 'pages/index.md');
   }
 

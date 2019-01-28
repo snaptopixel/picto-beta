@@ -1,6 +1,6 @@
-trailingComma: "all"
+trailingComma: all
 semi: true
 singleQuote: true
 jsxSingleQuote: true
-endOfLine: "lf"
-proseWrap: always
+endOfLine: lf
+proseWrap: never

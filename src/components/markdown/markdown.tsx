@@ -1,5 +1,5 @@
 import * as resource from '@/components/graph/resource';
-import { Component, Element, Prop } from '@stencil/core';
+import { Component, Element, Method, Prop } from '@stencil/core';
 import { css } from 'emotion';
 import Marked from 'marked';
 
@@ -7,30 +7,13 @@ Marked.setOptions({ breaks: true });
 
 // In order to render previews we create a new "renderer" for Marked
 const renderer = new Marked.Renderer();
-// This variable will contain yaml for configuring previews
-let previewProps = '';
-// Use html comments <!-- --> to hold preview props
-const html = renderer.html;
-// When parsing a comment, save it's contents for the next preview
-renderer.html = (source: string) => {
-  const parsed = html(source);
-  const comment = parsed.match(/<!--([^]+?)-->/);
-  if (comment) {
-    previewProps = comment[1];
-  }
-  return parsed;
-};
-
 // Use html code blocks ```html to hold preview markup
 const code = renderer.code;
 // When parsing an html code block, create markup for the preview
 renderer.code = (src: string, lang: string, isEscaped: boolean) => {
   switch (lang) {
     case 'html':
-      const value = `<picto-preview source='${escape(src)}' props='${escape(
-        previewProps,
-      )}'></picto-preview>`;
-      previewProps = '';
+      const value = `<picto-preview source='${escape(src)}'></picto-preview>`;
       return value;
     default:
       return code(src, lang, isEscaped);
@@ -78,8 +61,9 @@ export class Markdown {
   @Prop({ context: 'resourcesUrl' }) resourcesUrl: string;
   /** The markdown to be rendered */
   @Prop({ mutable: true }) source: string;
+  /** Component metadata, used to render props etc */
   @Prop() component: IComponentMeta;
-
+  /** Url of a markdown file to load */
   @Prop() url: string;
 
   async componentWillLoad() {
@@ -192,11 +176,52 @@ export class Markdown {
         </picto-styled>
       );
 
+      const methods = (
+        <picto-styled style={{ display: 'block', marginTop: '30px' }}>
+          <h3 class='title is-6'>
+            <picto-icon name='bullhorn' class='has-text-link' />
+            &nbsp;Methods
+          </h3>
+          <article class='message is-size-7'>
+            <div class='message-body'>
+              <table class={styles.propsTable}>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.component.methods.map(m => (
+                    <tr>
+                      <td>
+                        <b>{m.name}</b>
+                        <p>{m.docs}</p>
+                      </td>
+                      <td>
+                        <picto-code
+                          inline
+                          source={m.signature.replace(m.name, '')}
+                          lang='ts'
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </picto-styled>
+      );
+
       if (this.component.props.length) {
         content.push(props);
       }
       if (this.component.events.length) {
         content.push(events);
+      }
+      if (this.component.methods.length) {
+        content.push(methods);
       }
     }
     return content;

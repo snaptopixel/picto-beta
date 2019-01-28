@@ -11,7 +11,6 @@
 | ------------- | -------------- | ----------- | ---------------- | ----------- |
 | `component`   | --             |             | `IComponentMeta` | `undefined` |
 | `menuVisible` | `menu-visible` |             | `boolean`        | `false`     |
-| `props`       | `props`        |             | `string`         | `undefined` |
 | `source`      | `source`       |             | `string`         | `undefined` |
 
 

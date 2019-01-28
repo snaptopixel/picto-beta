@@ -14,7 +14,21 @@ interface IComponentMeta {
     docs: string;
     event: string;
   }>;
-  methods: [];
+  methods: Array<{
+    name: string;
+    returns: {
+      type: string;
+      docs: string;
+    };
+    signature: string;
+    parameters: Array<{
+      name: string;
+      type: string;
+      docs: string;
+    }>;
+    docs: string;
+    docsTags: [];
+  }>;
   props: Array<{
     attr: string;
     default: string;
@@ -39,10 +53,4 @@ interface IComponentManifest {
     version: string;
   };
   components: IComponentMeta[];
-}
-
-namespace MyComponent {
-  export interface ISomeThing {
-    foo: string;
-  }
 }

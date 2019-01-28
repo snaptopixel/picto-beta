@@ -94,12 +94,10 @@ export class Preview {
 
   @Prop({ mutable: true }) source: string;
   @Prop({ mutable: true, reflectToAttr: true }) menuVisible = false;
-  @Prop() props: string;
   @Prop() component: IComponentMeta;
 
   @State() state: 'preview' | 'source' | 'events' = 'preview';
   @State() events: IComponentEvent[] = [];
-  @State() demoProps: { [prop: string]: any };
 
   previewEl: HTMLElement;
   viewedEventsCount = 0;
@@ -109,6 +107,7 @@ export class Preview {
   menuPopper: Popper;
   menuTarget: HTMLElement;
   previewProps: IPreviewProp[];
+  execScript: string;
 
   get eventCount() {
     return this.state === 'events' ||
@@ -140,44 +139,27 @@ export class Preview {
     this.menuVisible = true;
     e.preventDefault();
     e.stopPropagation();
+    this.setProps();
   }
 
-  @Watch('demoProps')
   setProps() {
-    if (!this.component) {
-      return;
-    }
-    const el: any = this.el.querySelector(this.component.tag);
+    const el: any = this.previewEl.querySelector(this.component.tag);
     this.previewProps = this.component.props.reduce(
       (props, prop) => {
-        const p: IPreviewProp = { name: prop.name, type: prop.type };
-        props.push(p);
-        if (this.demoProps && this.demoProps[prop.name]) {
-          p.value = this.demoProps[prop.name];
-        } else {
-          const curValue = el[prop.name];
-          const defaultValue = new Function(
-            `try { return ${prop.default} } catch { return 'unknown'}`,
-          )();
-          p.value =
-            JSON.stringify(curValue) !== JSON.stringify(prop.default)
-              ? curValue
-              : defaultValue;
-        }
+        props.push({
+          name: prop.name,
+          type: prop.type,
+          value: el[prop.name],
+        });
         return props;
       },
       [] as IPreviewProp[],
     );
-
-    this.previewProps.map(prop => {
-      el[prop.name] = prop.value;
-    });
   }
 
   @Watch('component')
-  onComponent() {
-    const el: any = this.el.querySelector(this.component.tag);
-    this.setProps();
+  addComponentListeners() {
+    const el: any = this.previewEl.querySelector(this.component.tag);
     this.component.events.map(evt => {
       el.addEventListener(evt.event, this);
     });
@@ -193,9 +175,19 @@ export class Preview {
     }
   }
 
+  @Listen('propChanged')
+  onPropChanged(e: CustomEvent<{ name: string; value: any }>) {
+    const el: any = this.previewEl.querySelector(this.component.tag);
+    el[e.detail.name] = e.detail.value;
+  }
+
   componentWillLoad() {
     this.source = unescape(this.source);
-    this.demoProps = Yaml.load(unescape(this.props));
+    const findScript = /<script>([^]+?)<\/script>/gm;
+    const scriptResult = findScript.exec(this.source);
+    if (scriptResult) {
+      this.execScript = scriptResult[1];
+    }
   }
 
   componentDidLoad() {
@@ -207,12 +199,23 @@ export class Preview {
         },
       },
     });
+    if (this.execScript) {
+      const elementsByRef: { [id: string]: HTMLElement } = {};
+      Array.from(this.el.querySelectorAll('[ref]')).map(node => {
+        const el = node as HTMLElement;
+        elementsByRef[el.getAttribute('ref')] = el;
+      });
+      const fn = new Function(...Object.keys(elementsByRef), this.execScript);
+      fn(...Object.values(elementsByRef));
+    }
   }
 
   hostData() {
     return {
       class: css`
         position: relative;
+        margin-top: 35px;
+        display: block;
       `,
     };
   }
@@ -233,6 +236,7 @@ export class Preview {
           }}
           ref={(el: HTMLElement) => (this.menuEl = el)}
           props={this.previewProps}
+          component={this.component}
         />
         <div class='card'>
           <div
@@ -251,7 +255,7 @@ export class Preview {
                 justifyContent: 'center',
               }}
             >
-              <div innerHTML={this.source} />
+              <div ref={el => (this.previewEl = el)} innerHTML={this.source} />
             </div>
           </div>
           <div

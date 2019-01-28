@@ -1,17 +1,12 @@
 import { Config } from '@stencil/core';
 
+import docsRenderer from './src/picto/renderer';
+
 export const config: Config = {
   namespace: 'picto',
-  outputTargets: [{ type: 'www', dir: 'docs' }],
-  copy: [
-    {
-      src: 'pages',
-      dest: 'build/picto/pages',
-    },
-    {
-      src: 'pages',
-      dest: '../install/pages',
-    },
+  outputTargets: [
+    { type: 'docs-custom', generator: docsRenderer },
+    { type: 'www', dir: 'docs' },
   ],
   devServer: {
     port: 3333,

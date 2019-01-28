@@ -14,30 +14,37 @@ preview:
             href: https://www.google.com
           - label: Page Link
             sref: /
-            
-  
 ---
 
 # picto-menu
 
-Displays a menu for your components
+Navigation menu with support for search, grouping, routing, etc. Used as the left-hand menu in the Picto ui.
 
-<!--
-options:
-  - label: Label
-  - links:
-    - label: Link
-      href: https://stenciljs.com
-    - label: Submenu (active due to route)
-      sref: /global
-      links:
-      - label: URL Link
-        href: https://www.google.com
-      - label: Page Link
-        sref: /
--->
 ```html
-<picto-menu></picto-menu>
+<picto-menu ref='menu'></picto-menu>
+<script>
+  menu.options = [
+    {
+      label: 'Label'
+    },
+    {
+      links: [
+        {
+          label: 'Link',
+          href: 'https://stenciljs.com'
+        },
+        {
+          label: 'Submenu (active due to route)',
+          sref: '/global',
+          links: [
+            {label: 'URL Link', href: 'https://www.google.com'},
+            {label: 'Page Link', sref: '/'}
+          ]
+        }
+      ]
+    }
+  ]
+</script>
 ```
 
 <!-- Auto Generated Below -->

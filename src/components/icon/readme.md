@@ -9,9 +9,17 @@ preview:
 ---
 
 # picto-icon
-
+The icon is p cool my guy
 ```html
-<picto-icon name='anchor' style='font-size: 48px;'></picto-icon>
+<div ref='foo'>
+  <div>
+    <span ref="bar"></span>
+  </div>
+</div>
+<picto-icon ref='icon' name='anchor' style='font-size: 48px;'></picto-icon>
+<script>
+//icon.name = 'cogs';
+</script>
 ```
 
 <!-- Auto Generated Below -->
@@ -21,9 +29,6 @@ preview:
 
 | Property    | Attribute    | Description | Type                              | Default     |
 | ----------- | ------------ | ----------- | --------------------------------- | ----------- |
-| `bar`       | `bar`        |             | `number`                          | `undefined` |
-| `cool`      | `cool`       |             | `boolean`                         | `undefined` |
-| `foo`       | `foo`        |             | `boolean`                         | `undefined` |
 | `name`      | `name`       |             | `string`                          | `undefined` |
 | `styleType` | `style-type` |             | `"brand" \| "regular" \| "solid"` | `'solid'`   |
 
