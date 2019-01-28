@@ -42,6 +42,7 @@ export class Graph {
   @Element() el: HTMLElement;
 
   @Prop({ context: 'resourcesUrl' }) resourcesUrl: string;
+  @Prop() baseUrl = '';
 
   @State() menuOptions: Array<IMenu | ILink>;
   @State() indexSrc: string;
@@ -95,7 +96,7 @@ export class Graph {
       } else {
         this.pages[link.page] = {
           route: link.sref,
-          url: `${this.resourcesUrl}picto/pages/${route}.md`,
+          url: `${this.resourcesUrl}pages/${route}.md`,
         };
       }
     }
@@ -197,15 +198,21 @@ export class Graph {
 
   async componentWillLoad() {
     const allResources = await Promise.all([
-      resource.open(this.resourcesUrl + 'picto/config.json', this.setManifest),
-      resource.open(this.resourcesUrl + 'picto/pages/index.md', this.setIndex),
+      resource.open(
+        this.resourcesUrl + this.baseUrl + 'config.json',
+        this.setManifest,
+      ),
+      resource.open(
+        this.resourcesUrl + this.baseUrl + 'pages/index.md',
+        this.setIndex,
+      ),
     ]);
     return allResources;
   }
 
   componentDidUnload() {
-    resource.close(this.resourcesUrl + 'picto/config.json');
-    resource.close(this.resourcesUrl + 'picto/pages/index.md');
+    resource.close(this.resourcesUrl + this.baseUrl + 'config.json');
+    resource.close(this.resourcesUrl + this.baseUrl + 'pages/index.md');
   }
 
   render() {
