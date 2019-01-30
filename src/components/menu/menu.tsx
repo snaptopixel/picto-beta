@@ -28,6 +28,7 @@ export class Menu {
   @Element() el: HTMLElement;
   @Event() navLinkClicked: EventEmitter<ILink>;
   @Prop() options: Array<IMenu | ILink> = [];
+
   @State() selectedLink: ILink;
   @State() visibleOptions: IMenu[];
   rawLinks: ILink[] = [];

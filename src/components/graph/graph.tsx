@@ -42,7 +42,7 @@ export class Graph {
   @Element() el: HTMLElement;
 
   @Prop({ context: 'resourcesUrl' }) resourcesUrl: string;
-  @Prop() baseUrl = '';
+  @Prop({ mutable: true }) baseUrl = '';
 
   @State() menuOptions: Array<IMenu | ILink>;
   @State() indexSrc: string;
@@ -82,6 +82,9 @@ export class Graph {
     }
     if (!link.sref) {
       link.sref = route;
+    }
+    if (link.sref) {
+      link.sref = link.sref.replace('/', this.baseUrl);
     }
     if (link.page) {
       if (this.pages[link.page]) {
@@ -197,34 +200,29 @@ export class Graph {
   }
 
   async componentWillLoad() {
+    this.baseUrl = `/${this.baseUrl}/`.replace(/\/\//g, '/');
     const allResources = await Promise.all([
-      resource.open(
-        this.resourcesUrl + this.baseUrl + 'config.json',
-        this.setManifest,
-      ),
-      resource.open(
-        this.resourcesUrl + this.baseUrl + 'pages/index.md',
-        this.setIndex,
-      ),
+      resource.open(this.resourcesUrl + 'config.json', this.setManifest),
+      resource.open(this.resourcesUrl + 'pages/index.md', this.setIndex),
     ]);
     return allResources;
   }
 
   componentDidUnload() {
-    resource.close(this.resourcesUrl + this.baseUrl + 'config.json');
-    resource.close(this.resourcesUrl + this.baseUrl + 'pages/index.md');
+    resource.close(this.resourcesUrl + 'config.json');
+    resource.close(this.resourcesUrl + 'pages/index.md');
   }
 
   render() {
     return [
       <stencil-router class={styles.host}>
         <stencil-route
-          url='/'
+          url={this.baseUrl}
           routeRender={({ history }) => (this.history = history)}
         />
         <picto-menu class={styles.menu} options={this.menuOptions} />
         <stencil-route
-          url='/'
+          url={this.baseUrl}
           exact={true}
           class={styles.body}
           component='picto-markdown'

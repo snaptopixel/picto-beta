@@ -7,7 +7,6 @@ const WebSocket = require('ws');
 const portfinder = require('portfinder');
 
 const package = fs.readJsonSync('package.json');
-const devMode = process.env.NODE_ENV !== 'production';
 
 let firstRun = true;
 
@@ -70,7 +69,7 @@ async function startServer(src, dest) {
 
 let server;
 
-module.exports = function makeRenderer(pictoSrc, pictoDest) {
+module.exports = function makeRenderer(pictoSrc, pictoDest, devMode = true) {
   pictoSrc = path.resolve(pictoSrc);
   pictoDest = path.resolve(pictoDest);
 
