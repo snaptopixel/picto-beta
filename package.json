@@ -1,6 +1,6 @@
 {
   "name": "@snaptopixel/picto-beta",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "Preview, develop and document StencilJS components",
   "main": "dist/index.js",
   "collection": "dist/collection/collection-manifest.json",
