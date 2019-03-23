@@ -8,7 +8,7 @@ Marked.setOptions({ breaks: true });
 // In order to render previews we create a new "renderer" for Marked
 const renderer = new Marked.Renderer();
 // Use html code blocks ```html to hold preview markup
-const code = renderer.code;
+const code = renderer.code.bind(renderer);
 // When parsing an html code block, create markup for the preview
 renderer.code = (src: string, lang: string, isEscaped: boolean) => {
   switch (lang) {
